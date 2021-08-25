@@ -1,5 +1,8 @@
 package services.impl;
 
+import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.annotation.*;
 import services.*;
 import entities.*;
 import java.util.List;
@@ -18,7 +21,8 @@ import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
-public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Serializable {
+@Contract
+public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Serializable, ContractInterface {
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
 	
@@ -44,6 +48,21 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	public void setCurrentCashDesk(CashDesk currentcashdesk) {
 		this.currentCashDesk = currentcashdesk;
 	}
+
+
+	@Transaction(intent = Transaction.TYPE.EVALUATE)
+	public boolean getB(final Context ctx)
+	{
+		return true;
+	}
+
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean getC(final Context ctx)
+	{
+		return true;
+	}
+
+//	@Transaction(intent = Transaction.TYPE.EVALUATE)
 	public Store getCurrentStore() {
 		return currentStore;
 	}	
