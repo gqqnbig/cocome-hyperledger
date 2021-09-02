@@ -1,5 +1,9 @@
 package entities;
 
+import com.owlike.genson.GenericType;
+import com.owlike.genson.Genson;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +40,7 @@ public class EntityManager {
 	private static List<Supplier> SupplierInstances = new LinkedList<Supplier>();
 	private static List<OrderProduct> OrderProductInstances = new LinkedList<OrderProduct>();
 
+	private static final Genson genson = new Genson();
 	
 	/* Put instances list into Map */
 	static {
@@ -212,14 +217,27 @@ public class EntityManager {
 			e.printStackTrace();
 			return false;
 		}
-	}		 	
+	}
+
+	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
+		List<T> list = loadList(clazz);
+//		System.out.printf("getAllInstancesOf has %d elements\n", list.size());
+		return list;
+	}
 	
 	 /* Get all objects belongs to same class */
 	public static List getAllInstancesOf(String ClassName) {
 			 return AllInstance.get(ClassName);
-	}	
+	}
 
-   /* Sub-create object */
+//	/* Get all objects belongs to same class */
+//	public static List getAllInstancesOf(ChaincodeStub stub, Class ClassName) {
+//		List<ClassName>.
+//		return genson.deserialize(, ClassName);
+//		return AllInstance.get(ClassName);
+//	}
+
+	/* Sub-create object */
 	public static Store createStoreObject() {
 		Store o = new Store();
 		return o;
