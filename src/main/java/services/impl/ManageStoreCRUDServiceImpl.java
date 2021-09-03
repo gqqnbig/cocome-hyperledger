@@ -1,8 +1,10 @@
 package services.impl;
 
+import com.owlike.genson.Genson;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 import services.*;
 import entities.*;
 import java.util.List;
@@ -39,6 +41,8 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	/* Shared variable from system services and get()/set() methods */
 	private CashDesk currentCashDesk;
 	private Store currentStore;
+
+	private final Genson genson = new Genson();
 			
 	/* all get and set functions for temp property*/
 	public CashDesk getCurrentCashDesk() {
@@ -75,6 +79,28 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	
+
+	@Transaction(intent = Transaction.TYPE.EVALUATE)
+	public Store getStore(final Context ctx) {
+		Store s =new Store();
+		s.setId(1);
+		s.setName("Target");
+		s.setAddress("Weyburn");
+		return s;
+	}
+
+	@Transaction(intent = Transaction.TYPE.EVALUATE)
+	public String getAllStores(final Context ctx) {
+		List<Store> list=new LinkedList<>();
+		Store s =new Store();
+		s.setId(1);
+		s.setName("Target");
+		s.setAddress("Weyburn");
+		list.add(s);
+
+		final String response = genson.serialize(list);
+		return response;
+	}
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
