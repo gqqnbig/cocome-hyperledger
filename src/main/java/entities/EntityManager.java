@@ -41,7 +41,8 @@ public class EntityManager {
 	private static List<OrderProduct> OrderProductInstances = new LinkedList<OrderProduct>();
 
 	private static final Genson genson = new Genson();
-	
+	public static ChaincodeStub stub;
+
 	/* Put instances list into Map */
 	static {
 		AllInstance.put("Store", StoreInstances);
