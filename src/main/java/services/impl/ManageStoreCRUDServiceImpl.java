@@ -258,6 +258,8 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			store.getAddress() == address
 			 && 
 			store.getIsOpened() == isopened
+			 &&
+			EntityManager.saveModified(Store.class)
 			 && 
 			true)) {
 				throw new PostconditionException();
