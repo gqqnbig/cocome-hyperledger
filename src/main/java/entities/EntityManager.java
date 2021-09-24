@@ -241,7 +241,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteStoreObject(Store o) {
-		return StoreInstances.remove(o);
+		List<Store> list = loadList(Store.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Store", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteStoreObjects(List<Store> os) {
