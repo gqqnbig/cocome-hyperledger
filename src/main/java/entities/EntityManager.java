@@ -1,10 +1,7 @@
 package entities;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 import java.io.Serializable;
@@ -562,7 +559,14 @@ public class EntityManager {
 	public static boolean deleteOrderProductObjects(List<OrderProduct> os) {
 		return OrderProductInstances.removeAll(os);
 	}
-  
+
+
+	public static <T> boolean saveModified(Class<T> clazz) {
+		List<T> list = loadList(clazz);
+		String json = genson.serialize(list);
+		stub.putStringState(clazz.getSimpleName(), json);
+		return true;
+	}
 
 	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
 		List<T> list = loadList(clazz);
