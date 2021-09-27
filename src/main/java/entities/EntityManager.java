@@ -2,6 +2,7 @@ package entities;
 
 import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
+import java.util.logging.Logger;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.*;
@@ -38,6 +39,8 @@ public class EntityManager {
 	private static List<OrderProduct> OrderProductInstances = new LinkedList<OrderProduct>();
 
 	private static final Genson genson = new Genson();
+	private static final Logger logger = Logger.getLogger("EntityManager");
+
 	public static ChaincodeStub stub;
 
 	/* Put instances list into Map */
@@ -219,7 +222,7 @@ public class EntityManager {
 
 	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
 		List<T> list = loadList(clazz);
-//		System.out.printf("getAllInstancesOf has %d elements\n", list.size());
+		logger.info(String.format("getAllInstancesOf %s has %d elements", clazz.getSimpleName(), list.size()));
 		return list;
 	}
 	
