@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +41,8 @@ public class EntityManager {
 	private static List<OrderEntry> OrderEntryInstances = new LinkedList<OrderEntry>();
 	private static List<Supplier> SupplierInstances = new LinkedList<Supplier>();
 	private static List<OrderProduct> OrderProductInstances = new LinkedList<OrderProduct>();
+
+	private static final Logger logger = Logger.getLogger("EntityManager");
 
 	
 	/* Put instances list into Map */
@@ -645,6 +648,7 @@ public class EntityManager {
 
 	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
 		List<T> list = loadList(clazz);
+		logger.info(String.format("getAllInstancesOf %s has %d elements", clazz.getSimpleName(), list.size()));
 		return list;
 	}
 
