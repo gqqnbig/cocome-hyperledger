@@ -18,7 +18,8 @@ import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
-public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
+@Contract
+public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
