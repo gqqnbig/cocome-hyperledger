@@ -1,20 +1,25 @@
 package entities;
 
+import org.hyperledger.fabric.contract.annotation.DataType;
+import org.hyperledger.fabric.contract.annotation.Property;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+@DataType()
 public class CashDesk implements Serializable {
 	
 	/* all primary attributes */
-	private int Id;
-	private String Name;
-	private boolean IsOpened;
+	@Property()
+	private int id;
+	@Property()
+	private String name;
+	@Property()
+	private boolean isOpened;
 	
 	/* all references */
 	private List<Sale> ContainedSales = new LinkedList<Sale>(); 
@@ -22,25 +27,25 @@ public class CashDesk implements Serializable {
 	
 	/* all get and set functions */
 	public int getId() {
-		return Id;
+		return id;
 	}	
 	
 	public void setId(int id) {
-		this.Id = id;
+		this.id = id;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}	
 	
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	public boolean getIsOpened() {
-		return IsOpened;
+		return isOpened;
 	}	
 	
 	public void setIsOpened(boolean isopened) {
-		this.IsOpened = isopened;
+		this.isOpened = isopened;
 	}
 	
 	/* all functions for reference*/
