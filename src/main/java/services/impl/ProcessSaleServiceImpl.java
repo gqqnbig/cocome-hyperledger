@@ -1,5 +1,6 @@
 package services.impl;
 
+import com.owlike.genson.Genson;
 import services.*;
 import entities.*;
 import java.util.List;
@@ -19,8 +20,10 @@ import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
 public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable {
-	
-	
+
+	private ChaincodeStub stub;
+	private static final Genson genson = new Genson();
+
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
 	
 	
@@ -34,23 +37,67 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 	//Shared variable from system services
 	
 	/* Shared variable from system services and get()/set() methods */
-	private CashDesk currentCashDesk;
-	private Store currentStore;
-			
+	private Integer currentCashDeskPK;
+	private Integer currentStorePK;
+
+
+	private Integer getCurrentCashDeskPK() {
+		if (currentCashDeskPK == null) {
+			currentCashDeskPK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentCashDeskPK"), Integer.class);
+		}
+
+		return currentCashDeskPK;
+	}
+
+	private void setCurrentCashDeskPK(int currentCashDeskPK) {
+		String json = genson.serialize(currentCashDeskPK);
+		stub.putStringState("CoCoMESystemImpl.currentCashDeskPK", json);
+		this.currentCashDeskPK = currentCashDeskPK;
+	}
+
+	private Integer getCurrentStorePK() {
+		if (currentStorePK == null) {
+			currentStorePK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentStorePK"), Integer.class);
+		}
+
+		return currentStorePK;
+	}
+
+	private void setCurrentStorePK(int currentStorePK) {
+		String json = genson.serialize(currentStorePK);
+		stub.putStringState("CoCoMESystemImpl.currentStorePK", json);
+		this.currentStorePK = currentStorePK;
+	}
+
 	/* all get and set functions for temp property*/
 	public CashDesk getCurrentCashDesk() {
-		return currentCashDesk;
-	}	
-	
-	public void setCurrentCashDesk(CashDesk currentcashdesk) {
-		this.currentCashDesk = currentcashdesk;
+		if (getCurrentCashDeskPK() == null)
+			return null;
+		for (CashDesk i : (List<CashDesk>) EntityManager.getAllInstancesOf(CashDesk.class)) {
+			if (i.getId() == getCurrentCashDeskPK()) {
+				return i;
+			}
+		}
+		return null;
 	}
+
+	public void setCurrentCashDesk(CashDesk currentcashdesk) {
+		setCurrentCashDeskPK(currentcashdesk.getId());
+	}
+
 	public Store getCurrentStore() {
-		return currentStore;
-	}	
-	
+		if (getCurrentStorePK() == null)
+			return null;
+		for (Store i : (List<Store>) EntityManager.getAllInstancesOf(Store.class)) {
+			if (i.getId() == getCurrentStorePK()) {
+				return i;
+			}
+		}
+		return null;
+	}
+
 	public void setCurrentStore(Store currentstore) {
-		this.currentStore = currentstore;
+		setCurrentStorePK(currentstore.getId());
 	}
 				
 	
@@ -69,13 +116,12 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(currentCashDesk) == false && currentCashDesk.getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) 
-		{ 
+		if (StandardOPs.oclIsundefined(getCurrentCashDesk()) == false && getCurrentCashDesk().getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) {
 			/* Logic here */
 			Sale s = null;
 			s = (Sale) EntityManager.createObject("Sale");
-			s.setBelongedCashDesk(currentCashDesk);
-			currentCashDesk.addContainedSales(s);
+			s.setBelongedCashDesk(getCurrentCashDesk());
+			getCurrentCashDesk().addContainedSales(s);
 			s.setIsComplete(false);
 			s.setIsReadytoPay(false);
 			EntityManager.addObject("Sale", s);
@@ -84,20 +130,20 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 			;
 			// post-condition checking
-			if (!(true && 
-			s.getBelongedCashDesk() == currentCashDesk
-			 && 
-			StandardOPs.includes(currentCashDesk.getContainedSales(), s)
-			 && 
-			s.getIsComplete() == false
-			 && 
-			s.getIsReadytoPay() == false
-			 && 
+			if (!(true &&
+					s.getBelongedCashDesk() == getCurrentCashDesk()
+					&&
+					StandardOPs.includes(getCurrentCashDesk().getContainedSales(), s)
+					&&
+					s.getIsComplete() == false
+					&&
+					s.getIsReadytoPay() == false
+					&&
 			StandardOPs.includes(((List<Sale>)EntityManager.getAllInstancesOf(Sale.class)), s)
-			 && 
-			this.getCurrentSale() == s
-			 && 
-			true)) {
+					&&
+					this.getCurrentSale() == s
+					&&
+					true)) {
 				throw new PostconditionException();
 			}
 			
@@ -268,8 +314,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			cp.setAmountTendered(amount);
 			cp.setBelongedSale(currentSale);
 			currentSale.setAssoicatedPayment(cp);
-			currentSale.setBelongedstore(currentStore);
-			currentStore.addSales(currentSale);
+			currentSale.setBelongedstore(getCurrentStore());
+			getCurrentStore().addSales(currentSale);
 			currentSale.setIsComplete(true);
 			currentSale.setTime(LocalDate.now());
 			cp.setBalance(amount-currentSale.getAmount());
@@ -278,26 +324,26 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 			;
 			// post-condition checking
-			if (!(true && 
-			cp.getAmountTendered() == amount
-			 && 
-			cp.getBelongedSale() == currentSale
-			 && 
-			currentSale.getAssoicatedPayment() == cp
-			 && 
-			currentSale.getBelongedstore() == currentStore
-			 && 
-			StandardOPs.includes(currentStore.getSales(), currentSale)
-			 && 
-			currentSale.getIsComplete() == true
-			 && 
-			currentSale.getTime().isEqual(LocalDate.now())
-			 && 
-			cp.getBalance() == amount-currentSale.getAmount()
-			 && 
+			if (!(true &&
+					cp.getAmountTendered() == amount
+					&&
+					cp.getBelongedSale() == currentSale
+					&&
+					currentSale.getAssoicatedPayment() == cp
+					&&
+					currentSale.getBelongedstore() == getCurrentStore()
+					&&
+					StandardOPs.includes(getCurrentStore().getSales(), currentSale)
+					&&
+					currentSale.getIsComplete() == true
+					&&
+					currentSale.getTime().isEqual(LocalDate.now())
+					&&
+					cp.getBalance() == amount - currentSale.getAmount()
+					&&
 			StandardOPs.includes(((List<CashPayment>)EntityManager.getAllInstancesOf(CashPayment.class)), cp)
-			 && 
-			true)) {
+					&&
+					true)) {
 				throw new PostconditionException();
 			}
 			
@@ -326,8 +372,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == false && currentSale.getIsReadytoPay() == true && services.thirdPartyCardPaymentService(cardAccountNumber, expiryDate, fee)) 
-		{ 
+		if (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == false && currentSale.getIsReadytoPay() == true && services.thirdPartyCardPaymentService(ctx, cardAccountNumber, expiryDate, fee)) {
 			/* Logic here */
 			CardPayment cdp = null;
 			cdp = (CardPayment) EntityManager.createObject("CardPayment");
@@ -337,36 +382,36 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			cdp.setCardAccountNumber(cardAccountNumber);
 			cdp.setExpiryDate(expiryDate);
 			EntityManager.addObject("CardPayment", cdp);
-			currentSale.setBelongedstore(currentStore);
-			currentStore.addSales(currentSale);
+			currentSale.setBelongedstore(getCurrentStore());
+			getCurrentStore().addSales(currentSale);
 			currentSale.setIsComplete(true);
 			currentSale.setTime(LocalDate.now());
 			
 			
 			;
 			// post-condition checking
-			if (!(true && 
-			cdp.getAmountTendered() == fee
-			 && 
-			cdp.getBelongedSale() == currentSale
-			 && 
-			currentSale.getAssoicatedPayment() == cdp
-			 && 
-			cdp.getCardAccountNumber() == cardAccountNumber
-			 && 
-			cdp.getExpiryDate() == expiryDate
-			 && 
-			StandardOPs.includes(((List<CardPayment>)EntityManager.getAllInstancesOf(CardPayment.class)), cdp)
-			 && 
-			currentSale.getBelongedstore() == currentStore
-			 && 
-			StandardOPs.includes(currentStore.getSales(), currentSale)
-			 && 
-			currentSale.getIsComplete() == true
-			 && 
-			currentSale.getTime().isEqual(LocalDate.now())
-			 && 
-			true)) {
+			if (!(true &&
+					cdp.getAmountTendered() == fee
+					&&
+					cdp.getBelongedSale() == currentSale
+					&&
+					currentSale.getAssoicatedPayment() == cdp
+					&&
+					cdp.getCardAccountNumber() == cardAccountNumber
+					&&
+					cdp.getExpiryDate() == expiryDate
+					&&
+					StandardOPs.includes(((List<CardPayment>)EntityManager.getAllInstancesOf(CardPayment.class)), cdp)
+					&&
+					currentSale.getBelongedstore() == getCurrentStore()
+					&&
+					StandardOPs.includes(getCurrentStore().getSales(), currentSale)
+					&&
+					currentSale.getIsComplete() == true
+					&&
+					currentSale.getTime().isEqual(LocalDate.now())
+					&&
+					true)) {
 				throw new PostconditionException();
 			}
 			
