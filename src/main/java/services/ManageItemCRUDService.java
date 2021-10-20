@@ -3,15 +3,16 @@ package services;
 import entities.*;
 import java.util.List;
 import java.time.LocalDate;
+import org.hyperledger.fabric.contract.Context;
 
 
 public interface ManageItemCRUDService {
 
 	/* all system operations of the use case*/
-	boolean createItem(int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	Item queryItem(int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean modifyItem(int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean deleteItem(int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean createItem(final Context ctx, int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	Item queryItem(final Context ctx, int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean modifyItem(final Context ctx, int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean deleteItem(final Context ctx, int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
 	
 	/* all get and set functions for temp property*/
 	

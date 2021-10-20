@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService, Serializable {
 	
@@ -53,22 +56,21 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean createSupplier(int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean createSupplier(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get supplier
 		Supplier supplier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf("Supplier"))
+		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class))
 		{
 			if (sup.getId() == id)
 			{
@@ -91,14 +93,14 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			EntityManager.addObject("Supplier", sup);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			sup.getId() == id
 			 && 
 			sup.getName() == name
 			 && 
-			StandardOPs.includes(((List<Supplier>)EntityManager.getAllInstancesOf("Supplier")), sup)
+			StandardOPs.includes(((List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class)), sup)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -106,7 +108,7 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -120,15 +122,18 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 	 
 	static {opINVRelatedEntity.put("createSupplier", Arrays.asList("Supplier"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public Supplier querySupplier(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Supplier querySupplier(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get supplier
 		Supplier supplier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf("Supplier"))
+		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class))
 		{
 			if (sup.getId() == id)
 			{
@@ -146,13 +151,13 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return supplier;
+			; return supplier;
 		}
 		else
 		{
@@ -161,15 +166,18 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 	} 
 	 
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean modifySupplier(int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean modifySupplier(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get supplier
 		Supplier supplier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf("Supplier"))
+		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class))
 		{
 			if (sup.getId() == id)
 			{
@@ -189,7 +197,7 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			supplier.setName(name);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(supplier.getId() == id
 			 && 
@@ -201,7 +209,7 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -215,15 +223,18 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 	 
 	static {opINVRelatedEntity.put("modifySupplier", Arrays.asList("Supplier"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean deleteSupplier(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean deleteSupplier(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get supplier
 		Supplier supplier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf("Supplier"))
+		for (Supplier sup : (List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class))
 		{
 			if (sup.getId() == id)
 			{
@@ -236,15 +247,15 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(supplier) == false && StandardOPs.includes(((List<Supplier>)EntityManager.getAllInstancesOf("Supplier")), supplier)) 
+		if (StandardOPs.oclIsundefined(supplier) == false && StandardOPs.includes(((List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class)), supplier)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Supplier", supplier);
 			
 			
-			refresh();
+			;
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Supplier>)EntityManager.getAllInstancesOf("Supplier")), supplier)
+			if (!(StandardOPs.excludes(((List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class)), supplier)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -252,7 +263,7 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

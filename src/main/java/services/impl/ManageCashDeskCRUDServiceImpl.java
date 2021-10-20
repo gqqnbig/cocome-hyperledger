@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService, Serializable {
 	
@@ -53,22 +56,21 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean createCashDesk(int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean createCashDesk(final Context ctx, int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashdesk
 		CashDesk cashdesk = null;
 		//no nested iterator --  iterator: any previous:any
-		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk"))
+		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -92,7 +94,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			EntityManager.addObject("CashDesk", cas);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cas.getId() == id
@@ -101,7 +103,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			 && 
 			cas.getIsOpened() == isopened
 			 && 
-			StandardOPs.includes(((List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk")), cas)
+			StandardOPs.includes(((List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class)), cas)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -109,7 +111,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -123,15 +125,18 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	 
 	static {opINVRelatedEntity.put("createCashDesk", Arrays.asList("CashDesk"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public CashDesk queryCashDesk(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public CashDesk queryCashDesk(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashdesk
 		CashDesk cashdesk = null;
 		//no nested iterator --  iterator: any previous:any
-		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk"))
+		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -149,13 +154,13 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return cashdesk;
+			; return cashdesk;
 		}
 		else
 		{
@@ -164,15 +169,18 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	} 
 	 
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean modifyCashDesk(int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean modifyCashDesk(final Context ctx, int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashdesk
 		CashDesk cashdesk = null;
 		//no nested iterator --  iterator: any previous:any
-		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk"))
+		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -193,7 +201,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			cashdesk.setIsOpened(isopened);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(cashdesk.getId() == id
 			 && 
@@ -207,7 +215,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -221,15 +229,18 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	 
 	static {opINVRelatedEntity.put("modifyCashDesk", Arrays.asList("CashDesk"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean deleteCashDesk(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean deleteCashDesk(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashdesk
 		CashDesk cashdesk = null;
 		//no nested iterator --  iterator: any previous:any
-		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk"))
+		for (CashDesk cas : (List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -242,15 +253,15 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(cashdesk) == false && StandardOPs.includes(((List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk")), cashdesk)) 
+		if (StandardOPs.oclIsundefined(cashdesk) == false && StandardOPs.includes(((List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class)), cashdesk)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("CashDesk", cashdesk);
 			
 			
-			refresh();
+			;
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk")), cashdesk)
+			if (!(StandardOPs.excludes(((List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class)), cashdesk)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -258,7 +269,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

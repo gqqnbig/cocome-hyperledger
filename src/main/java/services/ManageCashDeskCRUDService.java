@@ -3,15 +3,16 @@ package services;
 import entities.*;
 import java.util.List;
 import java.time.LocalDate;
+import org.hyperledger.fabric.contract.Context;
 
 
 public interface ManageCashDeskCRUDService {
 
 	/* all system operations of the use case*/
-	boolean createCashDesk(int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	CashDesk queryCashDesk(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean modifyCashDesk(int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean deleteCashDesk(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean createCashDesk(final Context ctx, int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	CashDesk queryCashDesk(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean modifyCashDesk(final Context ctx, int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean deleteCashDesk(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
 	
 	/* all get and set functions for temp property*/
 	

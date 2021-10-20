@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable {
 	
@@ -53,15 +56,14 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean makeNewSale() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean makeNewSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* previous state in post-condition*/
@@ -80,7 +82,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			this.setCurrentSale(s);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			s.getBelongedCashDesk() == currentCashDesk
@@ -91,7 +93,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			 && 
 			s.getIsReadytoPay() == false
 			 && 
-			StandardOPs.includes(((List<Sale>)EntityManager.getAllInstancesOf("Sale")), s)
+			StandardOPs.includes(((List<Sale>)EntityManager.getAllInstancesOf(Sale.class)), s)
 			 && 
 			this.getCurrentSale() == s
 			 && 
@@ -101,7 +103,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -114,15 +116,18 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 	 
 	static {opINVRelatedEntity.put("makeNewSale", Arrays.asList("Sale",""));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean enterItem(int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean enterItem(final Context ctx, int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Item i : (List<Item>)EntityManager.getAllInstancesOf("Item"))
+		for (Item i : (List<Item>)EntityManager.getAllInstancesOf(Item.class))
 		{
 			if (i.getBarcode() == barcode)
 			{
@@ -154,7 +159,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			EntityManager.addObject("SalesLineItem", sli);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			this.getCurrentSaleLine() == sli
@@ -171,7 +176,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			 && 
 			sli.getSubamount() == item.getPrice()*quantity
 			 && 
-			StandardOPs.includes(((List<SalesLineItem>)EntityManager.getAllInstancesOf("SalesLineItem")), sli)
+			StandardOPs.includes(((List<SalesLineItem>)EntityManager.getAllInstancesOf(SalesLineItem.class)), sli)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -179,7 +184,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -192,8 +197,11 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 	 
 	static {opINVRelatedEntity.put("enterItem", Arrays.asList("SalesLineItem","Item",""));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public float endSale() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public float endSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
@@ -217,7 +225,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			currentSale.setIsReadytoPay(true);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(currentSale.getAmount() == StandardOPs.sum(sub)
 			 && 
@@ -229,7 +237,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return currentSale.getAmount();
 		}
 		else
@@ -242,8 +250,11 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 	 
 	static {opINVRelatedEntity.put("endSale", Arrays.asList(""));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean makeCashPayment(float amount) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean makeCashPayment(final Context ctx, float amount) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* previous state in post-condition*/
@@ -265,7 +276,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			EntityManager.addObject("CashPayment", cp);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cp.getAmountTendered() == amount
@@ -284,7 +295,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			 && 
 			cp.getBalance() == amount-currentSale.getAmount()
 			 && 
-			StandardOPs.includes(((List<CashPayment>)EntityManager.getAllInstancesOf("CashPayment")), cp)
+			StandardOPs.includes(((List<CashPayment>)EntityManager.getAllInstancesOf(CashPayment.class)), cp)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -292,7 +303,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -305,8 +316,11 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 	 
 	static {opINVRelatedEntity.put("makeCashPayment", Arrays.asList("","CashPayment"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean makeCardPayment(String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean makeCardPayment(final Context ctx, String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* previous state in post-condition*/
@@ -329,7 +343,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			currentSale.setTime(LocalDate.now());
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cdp.getAmountTendered() == fee
@@ -342,7 +356,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			 && 
 			cdp.getExpiryDate() == expiryDate
 			 && 
-			StandardOPs.includes(((List<CardPayment>)EntityManager.getAllInstancesOf("CardPayment")), cdp)
+			StandardOPs.includes(((List<CardPayment>)EntityManager.getAllInstancesOf(CardPayment.class)), cdp)
 			 && 
 			currentSale.getBelongedstore() == currentStore
 			 && 
@@ -358,7 +372,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable 
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

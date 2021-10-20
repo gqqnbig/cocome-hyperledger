@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, Serializable {
 	
@@ -53,22 +56,21 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean createCashier(int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean createCashier(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashier
 		Cashier cashier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf("Cashier"))
+		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -91,14 +93,14 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			EntityManager.addObject("Cashier", cas);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cas.getId() == id
 			 && 
 			cas.getName() == name
 			 && 
-			StandardOPs.includes(((List<Cashier>)EntityManager.getAllInstancesOf("Cashier")), cas)
+			StandardOPs.includes(((List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class)), cas)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -106,7 +108,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -120,15 +122,18 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	 
 	static {opINVRelatedEntity.put("createCashier", Arrays.asList("Cashier"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public Cashier queryCashier(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Cashier queryCashier(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashier
 		Cashier cashier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf("Cashier"))
+		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -146,13 +151,13 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return cashier;
+			; return cashier;
 		}
 		else
 		{
@@ -161,15 +166,18 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	} 
 	 
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean modifyCashier(int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean modifyCashier(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashier
 		Cashier cashier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf("Cashier"))
+		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -189,7 +197,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			cashier.setName(name);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(cashier.getId() == id
 			 && 
@@ -201,7 +209,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -215,15 +223,18 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	 
 	static {opINVRelatedEntity.put("modifyCashier", Arrays.asList("Cashier"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean deleteCashier(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean deleteCashier(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cashier
 		Cashier cashier = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf("Cashier"))
+		for (Cashier cas : (List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class))
 		{
 			if (cas.getId() == id)
 			{
@@ -236,15 +247,15 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(cashier) == false && StandardOPs.includes(((List<Cashier>)EntityManager.getAllInstancesOf("Cashier")), cashier)) 
+		if (StandardOPs.oclIsundefined(cashier) == false && StandardOPs.includes(((List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class)), cashier)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Cashier", cashier);
 			
 			
-			refresh();
+			;
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Cashier>)EntityManager.getAllInstancesOf("Cashier")), cashier)
+			if (!(StandardOPs.excludes(((List<Cashier>)EntityManager.getAllInstancesOf(Cashier.class)), cashier)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -252,7 +263,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
