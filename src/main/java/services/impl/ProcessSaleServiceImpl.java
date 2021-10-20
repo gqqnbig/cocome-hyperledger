@@ -23,8 +23,9 @@ import java.util.*;
 @Contract
 public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable, ContractInterface {
 	private static final Genson genson = new Genson();
-	
-	
+
+	private ChaincodeStub stub;
+
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
 	
 	
@@ -364,8 +365,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == false && currentSale.getIsReadytoPay() == true && services.thirdPartyCardPaymentService(cardAccountNumber, expiryDate, fee)) 
-		{ 
+		if (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == false && currentSale.getIsReadytoPay() == true && services.thirdPartyCardPaymentService(ctx, cardAccountNumber, expiryDate, fee)) {
 			/* Logic here */
 			CardPayment cdp = null;
 			cdp = (CardPayment) EntityManager.createObject("CardPayment");

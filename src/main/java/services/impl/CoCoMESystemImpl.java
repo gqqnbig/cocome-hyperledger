@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import java.util.logging.Logger;
+
 import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
@@ -24,9 +26,11 @@ import java.util.*;
 public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInterface {
 	private static final Genson genson = new Genson();
 	
+	private static final Logger logger = Logger.getLogger("CoCoMESystemImpl");
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
 	
+	private ChaincodeStub stub;
 	
 	ThirdPartyServices services;
 			
@@ -42,8 +46,9 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	public boolean openCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.stub = stub;
-		
-		
+		this.stub = stub;
+
+
 		/* Code generated for contract definition */
 		//Get cd
 		CashDesk cd = null;
@@ -58,6 +63,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 				
 			
 		}
+		System.out.println("cd is " + genson.serialize(cd));
+		System.out.println("current store is " + genson.serialize(getCurrentStore()));
 		/* previous state in post-condition*/
 
 		/* check precondition */
@@ -158,8 +165,9 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	public boolean openStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.stub = stub;
-		
-		
+		this.stub = stub;
+
+
 		/* Code generated for contract definition */
 		//Get sto
 		Store sto = null;
