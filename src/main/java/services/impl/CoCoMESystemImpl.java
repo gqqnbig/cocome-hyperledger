@@ -1,5 +1,6 @@
 package services.impl;
 
+import com.owlike.genson.Genson;
 import services.*;
 import entities.*;
 import java.util.List;
@@ -14,17 +15,22 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import java.util.logging.Logger;
+
 import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
 @Contract
 public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInterface {
-	
-	
+
+	private static final Logger logger = Logger.getLogger("CoCoMESystemImpl");
+
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
-	
-	
+
+	private ChaincodeStub stub;
+	private static final Genson genson = new Genson();
+
 	ThirdPartyServices services;
 			
 	public CoCoMESystemImpl() {
@@ -39,8 +45,9 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	public boolean openCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.stub = stub;
-		
-		
+		this.stub = stub;
+
+
 		/* Code generated for contract definition */
 		//Get cd
 		CashDesk cd = null;
@@ -55,11 +62,12 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 				
 			
 		}
+		System.out.println("cd is " + genson.serialize(cd));
+		System.out.println("current store is " + genson.serialize(getCurrentStore()));
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(cd) == false && cd.getIsOpened() == false && StandardOPs.oclIsundefined(currentStore) == false && currentStore.getIsOpened() == true) 
-		{ 
+		if (StandardOPs.oclIsundefined(cd) == false && cd.getIsOpened() == false && StandardOPs.oclIsundefined(getCurrentStore()) == false && getCurrentStore().getIsOpened() == true) {
 			/* Logic here */
 			this.setCurrentCashDesk(cd);
 			cd.setIsOpened(true);
@@ -114,8 +122,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(cd) == false && cd.getIsOpened() == true && StandardOPs.oclIsundefined(currentStore) == false && currentStore.getIsOpened() == true) 
-		{ 
+		if (StandardOPs.oclIsundefined(cd) == false && cd.getIsOpened() == true && StandardOPs.oclIsundefined(getCurrentStore()) == false && getCurrentStore().getIsOpened() == true) {
 			/* Logic here */
 			this.setCurrentCashDesk(cd);
 			cd.setIsOpened(false);
@@ -151,8 +158,9 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	public boolean openStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.stub = stub;
-		
-		
+		this.stub = stub;
+
+
 		/* Code generated for contract definition */
 		//Get sto
 		Store sto = null;
@@ -449,23 +457,69 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	
 	
 	/* temp property for controller */
-	private CashDesk currentCashDesk;
-	private Store currentStore;
-			
+	private Integer currentCashDeskPK;
+	private Integer currentStorePK;
+
+
+	private Integer getCurrentCashDeskPK() {
+		if (currentCashDeskPK == null) {
+			currentCashDeskPK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentCashDeskPK"), Integer.class);
+		}
+
+		return currentCashDeskPK;
+	}
+
+	private void setCurrentCashDeskPK(int currentCashDeskPK) {
+		String json = genson.serialize(currentCashDeskPK);
+		stub.putStringState("CoCoMESystemImpl.currentCashDeskPK", json);
+		this.currentCashDeskPK = currentCashDeskPK;
+	}
+
+	private Integer getCurrentStorePK() {
+		if (currentStorePK == null) {
+			currentStorePK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentStorePK"), Integer.class);
+		}
+		logger.info("currentStorePK=" + currentStorePK);
+		return currentStorePK;
+	}
+
+	private void setCurrentStorePK(int currentStorePK) {
+		String json = genson.serialize(currentStorePK);
+		stub.putStringState("CoCoMESystemImpl.currentStorePK", json);
+		this.currentStorePK = currentStorePK;
+	}
+
 	/* all get and set functions for temp property*/
 	public CashDesk getCurrentCashDesk() {
-		return currentCashDesk;
-	}	
-	
-	public void setCurrentCashDesk(CashDesk currentcashdesk) {
-		this.currentCashDesk = currentcashdesk;
+		if (getCurrentCashDeskPK() == null)
+			return null;
+		for (CashDesk i : (List<CashDesk>) EntityManager.getAllInstancesOf(CashDesk.class)) {
+			if (i.getId() == getCurrentCashDeskPK()) {
+				return i;
+			}
+		}
+		return null;
 	}
+
+	public void setCurrentCashDesk(CashDesk currentcashdesk) {
+		setCurrentCashDeskPK(currentcashdesk.getId());
+	}
+
 	public Store getCurrentStore() {
-		return currentStore;
-	}	
-	
+		if (getCurrentStorePK() == null)
+			return null;
+		for (Store i : (List<Store>) EntityManager.getAllInstancesOf(Store.class)) {
+			if (i.getId() == getCurrentStorePK()) {
+				logger.info("currentStore is " + i);
+				return i;
+			}
+		}
+		logger.info("currentStore is not found");
+		return null;
+	}
+
 	public void setCurrentStore(Store currentstore) {
-		this.currentStore = currentstore;
+		setCurrentStorePK(currentstore.getId());
 	}
 	
 	/* invarints checking*/
