@@ -15,12 +15,16 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import java.util.logging.Logger;
+
 import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
 @Contract
 public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable, ContractInterface {
+
+	private static final Logger logger = Logger.getLogger("ProcessSaleServiceImpl");
 
 	private ChaincodeStub stub;
 	private static final Genson genson = new Genson();
@@ -46,6 +50,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		if (currentCashDeskPK == null) {
 			currentCashDeskPK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentCashDeskPK"), Integer.class);
 		}
+		logger.info("currentCashDeskPK=" + currentCashDeskPK);
 
 		return currentCashDeskPK;
 	}
@@ -76,9 +81,11 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			return null;
 		for (CashDesk i : (List<CashDesk>) EntityManager.getAllInstancesOf(CashDesk.class)) {
 			if (i.getId() == getCurrentCashDeskPK()) {
+				logger.info("CurrentCashDesk is " + i);
 				return i;
 			}
 		}
+		logger.info("CurrentCashDesk is not found");
 		return null;
 	}
 
