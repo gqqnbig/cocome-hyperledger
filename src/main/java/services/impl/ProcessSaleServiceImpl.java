@@ -95,6 +95,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	public boolean makeNewSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.stub = stub;
+		this.stub = stub;
 		
 		
 		/* previous state in post-condition*/
