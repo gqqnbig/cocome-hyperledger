@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import java.util.logging.Logger;
+
 import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
@@ -23,6 +25,8 @@ import java.util.*;
 @Contract
 public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable, ContractInterface {
 	private static final Genson genson = new Genson();
+
+	private static final Logger logger = Logger.getLogger("ProcessSaleServiceImpl");
 
 	private ChaincodeStub stub;
 
