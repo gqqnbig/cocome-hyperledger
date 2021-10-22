@@ -19,7 +19,8 @@ import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
-public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable {
+@Contract
+public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable, ContractInterface {
 
 	private ChaincodeStub stub;
 	private static final Genson genson = new Genson();
