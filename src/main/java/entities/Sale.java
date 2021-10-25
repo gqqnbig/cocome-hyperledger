@@ -1,6 +1,8 @@
 package entities;
 
-import services.impl.StandardOPs;
+import org.hyperledger.fabric.contract.annotation.DataType;
+import org.hyperledger.fabric.contract.annotation.Property;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -9,13 +11,18 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+@DataType()
 public class Sale implements Serializable {
 	
 	/* all primary attributes */
-	private LocalDate Time;
-	private boolean IsComplete;
-	private float Amount;
-	private boolean IsReadytoPay;
+	@Property()
+	private LocalDate time;
+	@Property()
+	private boolean isComplete;
+	@Property()
+	private float amount;
+	@Property()
+	private boolean isReadytoPay;
 	
 	/* all references */
 	private Store Belongedstore; 
@@ -25,32 +32,32 @@ public class Sale implements Serializable {
 	
 	/* all get and set functions */
 	public LocalDate getTime() {
-		return Time;
+		return time;
 	}	
 	
 	public void setTime(LocalDate time) {
-		this.Time = time;
+		this.time = time;
 	}
 	public boolean getIsComplete() {
-		return IsComplete;
+		return isComplete;
 	}	
 	
 	public void setIsComplete(boolean iscomplete) {
-		this.IsComplete = iscomplete;
+		this.isComplete = iscomplete;
 	}
 	public float getAmount() {
-		return Amount;
+		return amount;
 	}	
 	
 	public void setAmount(float amount) {
-		this.Amount = amount;
+		this.amount = amount;
 	}
 	public boolean getIsReadytoPay() {
-		return IsReadytoPay;
+		return isReadytoPay;
 	}	
 	
 	public void setIsReadytoPay(boolean isreadytopay) {
-		this.IsReadytoPay = isreadytopay;
+		this.isReadytoPay = isreadytopay;
 	}
 	
 	/* all functions for reference*/
@@ -91,7 +98,7 @@ public class Sale implements Serializable {
 	/* invarints checking*/
 	public boolean Sale_AmountGreatAndEqualZero() {
 		
-		if (Amount >= 0) {
+		if (amount >= 0) {
 			return true;
 		} else {
 			return false;
