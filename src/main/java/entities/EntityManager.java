@@ -569,6 +569,27 @@ public class EntityManager {
 		return OrderProductInstances.removeAll(os);
 	}
 
+	public static CashDesk getCashDeskByPK(Integer pk) {
+		if (pk == null)
+			return null;
+		for (CashDesk i : (List<CashDesk>) EntityManager.getAllInstancesOf(CashDesk.class)) {
+			if (i.getId() == pk) {
+				return i;
+			}
+		}
+		return null;
+	}
+
+	public static Store getStoreByPK(Integer pk) {
+		if (pk == null)
+			return null;
+		for (Store i : (List<Store>) EntityManager.getAllInstancesOf(Store.class)) {
+			if (i.getId() == pk) {
+				return i;
+			}
+		}
+		return null;
+	}
 
 	public static <T> boolean saveModified(Class<T> clazz) {
 		List<T> list = loadList(clazz);
