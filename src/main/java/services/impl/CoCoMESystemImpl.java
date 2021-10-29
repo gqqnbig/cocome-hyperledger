@@ -78,7 +78,9 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			if (!(this.getCurrentCashDesk() == cd
 			 && 
 			cd.getIsOpened() == true
-			 && 
+			 &&
+			EntityManager.saveModified(CashDesk.class)
+			&&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -190,7 +192,9 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			if (!(this.getCurrentStore() == sto
 			 && 
 			sto.getIsOpened() == true
-			 && 
+			 &&
+			EntityManager.saveModified(Store.class)
+			&&
 			true)) {
 				throw new PostconditionException();
 			}
