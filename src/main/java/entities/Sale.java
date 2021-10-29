@@ -1,5 +1,7 @@
 package entities;
 
+import com.owlike.genson.annotation.JsonIgnore;
+import com.owlike.genson.annotation.JsonProperty;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -24,8 +26,10 @@ public class Sale implements Serializable {
 	private boolean isReadytoPay;
 	
 	/* all references */
-	private Store Belongedstore; 
-	private CashDesk BelongedCashDesk; 
+	@JsonProperty
+	private Integer BelongedstorePK;
+	@JsonProperty
+	private Integer BelongedCashDeskPK;
 	private List<SalesLineItem> ContainedSalesLine = new LinkedList<SalesLineItem>(); 
 	private Payment AssoicatedPayment; 
 	
@@ -60,19 +64,22 @@ public class Sale implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Store getBelongedstore() {
-		return Belongedstore;
+		return EntityManager.getStoreByPK(BelongedstorePK);
 	}	
 	
 	public void setBelongedstore(Store store) {
-		this.Belongedstore = store;
-	}			
+		this.BelongedstorePK = store.getId();
+	}
+
+	@JsonIgnore
 	public CashDesk getBelongedCashDesk() {
-		return BelongedCashDesk;
+		return EntityManager.getCashDeskByPK(BelongedCashDeskPK);
 	}	
 	
 	public void setBelongedCashDesk(CashDesk cashdesk) {
-		this.BelongedCashDesk = cashdesk;
+		this.BelongedCashDeskPK = cashdesk.getId();
 	}			
 	public List<SalesLineItem> getContainedSalesLine() {
 		return ContainedSalesLine;
