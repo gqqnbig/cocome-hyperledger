@@ -14,7 +14,13 @@ import org.hyperledger.fabric.contract.annotation.*;
 
 @DataType()
 public class Sale implements Serializable {
-	
+
+	private final String guid = EntityManager.getGuid();
+
+	public String getGuid() {
+		return guid;
+	}
+
 	/* all primary attributes */
 	@Property()
 	private LocalDate time;
