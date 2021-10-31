@@ -100,13 +100,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 		this.stub = stub;
-		
-		
+
+		Sale currentSale = getCurrentSale();
+
+
 		/* previous state in post-condition*/
 
 		logger.info(String.format("%s", StandardOPs.oclIsundefined(getCurrentCashDesk())));
 		logger.info(String.format("%s", getCurrentCashDesk().getIsOpened()));
-		logger.info(String.format("%s", currentSale));
+		logger.info(String.format("%s", getCurrentSale()));
 
 		/* check precondition */
 		if (StandardOPs.oclIsundefined(getCurrentCashDesk()) == false && getCurrentCashDesk().getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) 
@@ -163,6 +165,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	public boolean enterItem(final Context ctx, int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
+
+		Sale currentSale = getCurrentSale();
 
 		/* Code generated for contract definition */
 		//Get item
@@ -246,6 +250,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
+		Sale currentSale = getCurrentSale();
+
 		/* Code generated for contract definition */
 		//Get sls
 		List<SalesLineItem> sls = new LinkedList<>();
@@ -299,6 +305,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	public boolean makeCashPayment(final Context ctx, float amount) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
+
+		Sale currentSale = getCurrentSale();
 
 		/* previous state in post-condition*/
 
@@ -366,6 +374,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	public boolean makeCardPayment(final Context ctx, String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
+
+		Sale currentSale = getCurrentSale();
 
 		/* previous state in post-condition*/
 
@@ -436,7 +446,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	
 	/* temp property for controller */
 	private SalesLineItem currentSaleLine;
-	private Sale currentSale;
+	private String currentSalePK;
 	private PaymentMethod currentPaymentMethod;
 			
 	/* all get and set functions for temp property*/
@@ -448,11 +458,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		this.currentSaleLine = currentsaleline;
 	}
 	public Sale getCurrentSale() {
-		return currentSale;
-	}	
-	
+		if (currentSalePK == null) {
+			currentSalePK = stub.getStringState("ProcessSaleServiceImpl.currentSalePK");
+		}
+		return EntityManager.getSaleByPK(currentSalePK);
+	}
+
 	public void setCurrentSale(Sale currentsale) {
-		this.currentSale = currentsale;
+		stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getGuid());
+		currentSalePK = currentsale.getGuid();
 	}
 	public PaymentMethod getCurrentPaymentMethod() {
 		return currentPaymentMethod;
