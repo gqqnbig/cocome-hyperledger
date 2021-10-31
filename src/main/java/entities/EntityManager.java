@@ -1,17 +1,10 @@
 package entities;
 
+
+import java.io.*;
 import java.util.logging.Logger;
 import java.util.*;
 import java.lang.reflect.Method;
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
-import java.io.Serializable;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.File;
 
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import com.owlike.genson.Genson;
@@ -663,6 +656,18 @@ public class EntityManager {
 		return null;
 	}
 
+	public static Sale getSaleByPK(String pk) {
+		if (pk == null)
+			return null;
+		for (Sale i : (List<Sale>) EntityManager.getAllInstancesOf(Sale.class)) {
+			if (pk.equals(i.getGuid())) {
+				return i;
+			}
+		}
+		return null;
+	}
+
+
 	public static <T> boolean saveModified(Class<T> clazz) {
 		List<T> list = loadList(clazz);
 		String json = genson.serialize(list);
@@ -697,6 +702,15 @@ public class EntityManager {
 		if (random == null)
 			random = new Random(getStub().getTxTimestamp().toEpochMilli());
 		return random;
+	}
+
+	public static String getGuid() {
+		try {
+			return UUID.nameUUIDFromBytes(Long.toString(getRandom().nextLong()).getBytes("UTF-8")).toString();
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new RuntimeException();
+		}
 	}
 
 	public static ChaincodeStub getStub() {
