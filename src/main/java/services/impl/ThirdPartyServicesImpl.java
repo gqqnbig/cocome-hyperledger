@@ -88,7 +88,7 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable,
 	@SuppressWarnings("unchecked")
 	public boolean thirdPartyCardPaymentService(final Context ctx, String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* previous state in post-condition*/

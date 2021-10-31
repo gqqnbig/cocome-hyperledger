@@ -92,7 +92,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	@SuppressWarnings("unchecked")
 	public boolean createStore(final Context ctx, int id, String name, String address, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -161,7 +161,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	@SuppressWarnings("unchecked")
 	public Store queryStore(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -205,7 +205,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	@SuppressWarnings("unchecked")
 	public boolean modifyStore(final Context ctx, int id, String name, String address, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -270,7 +270,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	@SuppressWarnings("unchecked")
 	public boolean deleteStore(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */

@@ -93,7 +93,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	@SuppressWarnings("unchecked")
 	public boolean createItem(final Context ctx, int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -165,7 +165,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	@SuppressWarnings("unchecked")
 	public Item queryItem(final Context ctx, int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -209,7 +209,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	@SuppressWarnings("unchecked")
 	public boolean modifyItem(final Context ctx, int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -277,7 +277,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	@SuppressWarnings("unchecked")
 	public boolean deleteItem(final Context ctx, int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */

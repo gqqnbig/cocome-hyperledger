@@ -93,7 +93,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 	@SuppressWarnings("unchecked")
 	public boolean createProductCatalog(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -156,7 +156,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 	@SuppressWarnings("unchecked")
 	public ProductCatalog queryProductCatalog(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -200,7 +200,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 	@SuppressWarnings("unchecked")
 	public boolean modifyProductCatalog(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -259,7 +259,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 	@SuppressWarnings("unchecked")
 	public boolean deleteProductCatalog(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
