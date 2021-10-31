@@ -93,7 +93,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 	@SuppressWarnings("unchecked")
 	public boolean makeNewOrder(final Context ctx, int orderid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* previous state in post-condition*/
@@ -147,7 +147,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 	@SuppressWarnings("unchecked")
 	public Item[] listAllOutOfStoreProducts(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* previous state in post-condition*/
@@ -186,7 +186,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 	@SuppressWarnings("unchecked")
 	public boolean orderItem(final Context ctx, int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -256,7 +256,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 	@SuppressWarnings("unchecked")
 	public boolean chooseSupplier(final Context ctx, int supplierID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -311,7 +311,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 	@SuppressWarnings("unchecked")
 	public boolean placeOrder(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* previous state in post-condition*/

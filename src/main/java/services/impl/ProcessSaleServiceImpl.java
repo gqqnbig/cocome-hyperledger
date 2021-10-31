@@ -98,7 +98,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	@SuppressWarnings("unchecked")
 	public boolean makeNewSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		this.stub = stub;
 		
 		
@@ -162,9 +162,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	@SuppressWarnings("unchecked")
 	public boolean enterItem(final Context ctx, int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
-		
-		
+		EntityManager.setStub(stub);
+
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
@@ -245,9 +244,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	@SuppressWarnings("unchecked")
 	public float endSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
-		
-		
+		EntityManager.setStub(stub);
+
 		/* Code generated for contract definition */
 		//Get sls
 		List<SalesLineItem> sls = new LinkedList<>();
@@ -300,9 +298,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	@SuppressWarnings("unchecked")
 	public boolean makeCashPayment(final Context ctx, float amount) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
-		
-		
+		EntityManager.setStub(stub);
+
 		/* previous state in post-condition*/
 
 		/* check precondition */
@@ -368,9 +365,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	@SuppressWarnings("unchecked")
 	public boolean makeCardPayment(final Context ctx, String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
-		
-		
+		EntityManager.setStub(stub);
+
 		/* previous state in post-condition*/
 
 		/* check precondition */
