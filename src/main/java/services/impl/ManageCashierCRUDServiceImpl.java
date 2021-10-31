@@ -63,7 +63,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	@SuppressWarnings("unchecked")
 	public boolean createCashier(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -126,7 +126,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	@SuppressWarnings("unchecked")
 	public Cashier queryCashier(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -170,7 +170,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	@SuppressWarnings("unchecked")
 	public boolean modifyCashier(final Context ctx, int id, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -227,7 +227,7 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 	@SuppressWarnings("unchecked")
 	public boolean deleteCashier(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
