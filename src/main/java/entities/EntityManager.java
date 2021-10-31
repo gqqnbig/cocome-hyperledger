@@ -618,5 +618,22 @@ public class EntityManager {
 		}
 		return list;
 	}
+
+	private static java.util.Random random;
+
+	public static java.util.Random getRandom() {
+		if (random == null)
+			random = new Random(getStub().getTxTimestamp().toEpochMilli());
+		return random;
+	}
+
+	public static ChaincodeStub getStub() {
+		return stub;
+	}
+
+	public static void setStub(ChaincodeStub stub) {
+		EntityManager.stub = stub;
+		random = null;
+	}
 }
 

@@ -44,7 +44,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public boolean openCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		this.stub = stub;
 
 
@@ -104,7 +104,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public boolean closeCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -159,7 +159,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public boolean openStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		this.stub = stub;
 
 
@@ -218,7 +218,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public boolean closeStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -271,7 +271,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public boolean changePrice(final Context ctx, int barcode, float newPrice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -324,7 +324,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public boolean receiveOrderedProduct(final Context ctx, int orderID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -401,7 +401,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public List<Supplier> listSuppliers(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* previous state in post-condition*/
@@ -431,7 +431,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	@SuppressWarnings("unchecked")
 	public List<Item> showStockReports(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* previous state in post-condition*/
