@@ -64,7 +64,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	@SuppressWarnings("unchecked")
 	public boolean createCashDesk(final Context ctx, int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -130,7 +130,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	@SuppressWarnings("unchecked")
 	public CashDesk queryCashDesk(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -174,7 +174,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	@SuppressWarnings("unchecked")
 	public boolean modifyCashDesk(final Context ctx, int id, String name, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */
@@ -234,7 +234,7 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 	@SuppressWarnings("unchecked")
 	public boolean deleteCashDesk(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
-		EntityManager.stub = stub;
+		EntityManager.setStub(stub);
 		
 		
 		/* Code generated for contract definition */

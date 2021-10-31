@@ -41,7 +41,7 @@ public class EntityManager {
 	private static final Genson genson = new Genson();
 	private static final Logger logger = Logger.getLogger("EntityManager");
 
-	public static ChaincodeStub stub;
+	private static ChaincodeStub stub;
 
 	/* Put instances list into Map */
 	static {
@@ -627,6 +627,23 @@ public class EntityManager {
 			AllInstance.put(key, list);
 		}
 		return list;
+	}
+
+	private static java.util.Random random;
+
+	public static java.util.Random getRandom() {
+		if (random == null)
+			random = new Random(getStub().getTxTimestamp().toEpochMilli());
+		return random;
+	}
+
+	public static ChaincodeStub getStub() {
+		return stub;
+	}
+
+	public static void setStub(ChaincodeStub stub) {
+		EntityManager.stub = stub;
+		random = null;
 	}
 }
 
