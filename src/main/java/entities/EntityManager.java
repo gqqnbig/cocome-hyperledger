@@ -659,6 +659,34 @@ public class EntityManager {
 	public static void setStub(ChaincodeStub stub) {
 		EntityManager.stub = stub;
 		random = null;
+
+		StoreInstances = new LinkedList<Store>();
+		ProductCatalogInstances = new LinkedList<ProductCatalog>();
+		CashDeskInstances = new LinkedList<CashDesk>();
+		SaleInstances = new LinkedList<Sale>();
+		CashierInstances = new LinkedList<Cashier>();
+		SalesLineItemInstances = new LinkedList<SalesLineItem>();
+		ItemInstances = new LinkedList<Item>();
+		PaymentInstances = new LinkedList<Payment>();
+		CashPaymentInstances = new LinkedList<CashPayment>();
+		CardPaymentInstances = new LinkedList<CardPayment>();
+		OrderEntryInstances = new LinkedList<OrderEntry>();
+		SupplierInstances = new LinkedList<Supplier>();
+		OrderProductInstances = new LinkedList<OrderProduct>();
+
+		AllInstance.put("Store", StoreInstances);
+		AllInstance.put("ProductCatalog", ProductCatalogInstances);
+		AllInstance.put("CashDesk", CashDeskInstances);
+		AllInstance.put("Sale", SaleInstances);
+		AllInstance.put("Cashier", CashierInstances);
+		AllInstance.put("SalesLineItem", SalesLineItemInstances);
+		AllInstance.put("Item", ItemInstances);
+		AllInstance.put("Payment", PaymentInstances);
+		AllInstance.put("CashPayment", CashPaymentInstances);
+		AllInstance.put("CardPayment", CardPaymentInstances);
+		AllInstance.put("OrderEntry", OrderEntryInstances);
+		AllInstance.put("Supplier", SupplierInstances);
+		AllInstance.put("OrderProduct", OrderProductInstances);
 	}
 }
 
