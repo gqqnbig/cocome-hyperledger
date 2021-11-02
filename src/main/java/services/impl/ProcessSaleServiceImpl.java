@@ -81,11 +81,11 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			return null;
 		for (CashDesk i : (List<CashDesk>) EntityManager.getAllInstancesOf(CashDesk.class)) {
 			if (i.getId() == getCurrentCashDeskPK()) {
-				logger.info("currentStore is " + i);
+				logger.info("CurrentCashDesk is " + i);
 				return i;
 			}
 		}
-		logger.info("currentStore is not found");
+		logger.info("CurrentCashDesk is not found");
 		return null;
 	}
 
