@@ -41,4 +41,4 @@ jobs:
           ls -lh $GITHUB_WORKSPACE
           $GITHUB_WORKSPACE/.github/workflows/makeNewSaleTest.sh 
       - name: Print log
-        run: docker ps --filter 'name=dev' --format '{{.ID}}' | xargs -n 1 -t docker logs
+        run: docker ps --filter 'name=dev' --format '{{.ID}}' | xargs -n 1 -t docker logs 2>&1
