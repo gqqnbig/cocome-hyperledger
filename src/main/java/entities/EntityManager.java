@@ -623,6 +623,7 @@ public class EntityManager {
 	private static <T> List<T> loadList(Class<T> clazz) {
 		String key = clazz.getSimpleName();
 		List<T> list = AllInstance.get(key);
+		System.out.printf("AllInstance.keySet = %s\n", AllInstance.keySet());
 		if (list == null || list.size() == 0) {
 			String json = stub.getStringState(key);
 			System.out.printf("loadList %s from chain: %s\n", key, json);
