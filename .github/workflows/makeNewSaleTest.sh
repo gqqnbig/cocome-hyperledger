@@ -12,8 +12,12 @@ pci -C mychannel -n cocome --waitForEvent -c '{"function":"ManageCashDeskCRUDSer
 pci -C mychannel -n cocome --waitForEvent -c '{"function":"CoCoMESystemImpl:openStore","Args":["1"]}'
 pci -C mychannel -n cocome --waitForEvent -c '{"function":"CoCoMESystemImpl:openCashDesk","Args":["1"]}'
 
+docker ps
+
 docker stop $(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')
 
 pci -C mychannel -n cocome --waitForEvent -c '{"function":"ProcessSaleServiceImpl:makeNewSale","Args":[]}'
+
+docker ps
 
 
