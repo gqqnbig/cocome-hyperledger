@@ -36,7 +36,7 @@ jobs:
       - name: Run Tests
         run: |
           export PATH=~/fabric-samples/bin:$PATH
-          cp .github/workflows/peer ~/fabric-samples/test-network/bin/
+          cp .github/workflows/peer ~/fabric-samples/bin/peer
           cd ~/fabric-samples/test-network
           ls -lh $GITHUB_WORKSPACE
           $GITHUB_WORKSPACE/.github/workflows/makeNewSaleTest.sh 
