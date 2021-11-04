@@ -52,8 +52,10 @@ public class EntityManager {
 		AllInstance.put("OrderEntry", OrderEntryInstances);
 		AllInstance.put("Supplier", SupplierInstances);
 		AllInstance.put("OrderProduct", OrderProductInstances);
-	} 
-		
+
+		System.out.println("EntityManager Static Initializer");
+	}
+
 	/* Save State */
 	public static void save(File file) {
 		
