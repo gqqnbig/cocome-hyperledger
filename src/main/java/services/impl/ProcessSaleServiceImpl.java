@@ -121,18 +121,19 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		EntityManager.setStub(stub);
 		this.stub = stub;
 
-		Sale currentSale = getCurrentSale();
+		EntityManager.getAllInstancesOf(Store.class);
+		return true;
 
-
-		/* previous state in post-condition*/
+/*
+		*//* previous state in post-condition*//*
 
 		logger.info(String.format("%s", StandardOPs.oclIsundefined(getCurrentCashDesk())));
 		logger.info(String.format("%s", getCurrentCashDesk().getIsOpened()));
 		logger.info(String.format("%s", getCurrentSale()));
 
-		/* check precondition */
+		*//* check precondition *//*
 		if (StandardOPs.oclIsundefined(getCurrentCashDesk()) == false && getCurrentCashDesk().getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) {
-			/* Logic here */
+			*//* Logic here *//*
 			Sale s = null;
 			s = (Sale) EntityManager.createObject("Sale");
 			s.setBelongedCashDesk(getCurrentCashDesk());
@@ -172,7 +173,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			throw new PreconditionException();
 		}
 		//all relevant vars : s this
-		//all relevant entities : Sale 
+		//all relevant entities : Sale */
 	} 
 	 
 	static {opINVRelatedEntity.put("makeNewSale", Arrays.asList("Sale",""));}
