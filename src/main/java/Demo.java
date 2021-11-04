@@ -22,6 +22,7 @@ public class Demo implements ContractInterface {
 			else
 				count = 0;
 		}
+		
 		count++;
 		stub.putStringState("count", String.valueOf(count));
 		return count;
