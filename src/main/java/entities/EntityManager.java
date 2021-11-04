@@ -625,12 +625,13 @@ public class EntityManager {
 		List<T> list = AllInstance.get(key);
 		if (list == null || list.size() == 0) {
 			String json = stub.getStringState(key);
-			System.out.printf("loadList %s: %s\n", key, json);
+			System.out.printf("loadList %s from chain: %s\n", key, json);
 			if (json != null && Objects.equals(json, "") == false)
 				list = GensonHelper.deserializeList(genson, json, clazz);
 			else
 				list = new LinkedList<>();
 			AllInstance.put(key, list);
+			System.out.printf("List %s has size %d\n", key, list.size());
 		}
 		return list;
 	}
