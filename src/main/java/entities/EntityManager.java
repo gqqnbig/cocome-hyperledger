@@ -625,6 +625,7 @@ public class EntityManager {
 		List<T> list = AllInstance.get(key);
 		System.out.printf("AllInstance.keySet = %s\n", AllInstance.keySet());
 		if (list == null || list.size() == 0) {
+			System.out.println("List " + key + " is " + (list == null ? "null" : ("@" + System.identityHashCode(list))));
 			String json = stub.getStringState(key);
 			System.out.printf("loadList %s from chain: %s\n", key, json);
 			if (json != null && Objects.equals(json, "") == false)
