@@ -1,5 +1,7 @@
 package entities;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class ThirdPartyServiceException extends Exception {
 
 	public ThirdPartyServiceException() {

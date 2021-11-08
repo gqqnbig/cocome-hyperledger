@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	
@@ -27,51 +30,21 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 		services = new ThirdPartyServicesImpl();
 	}
 
-	public void refresh() {
-		ProcessSaleService processsaleservice_service = (ProcessSaleService) ServiceManager
-				.getAllInstancesOf("ProcessSaleService").get(0);
-		processsaleservice_service.setCurrentCashDesk(currentCashDesk);
-		processsaleservice_service.setCurrentStore(currentStore);
-		ManageStoreCRUDService managestorecrudservice_service = (ManageStoreCRUDService) ServiceManager
-				.getAllInstancesOf("ManageStoreCRUDService").get(0);
-		managestorecrudservice_service.setCurrentCashDesk(currentCashDesk);
-		managestorecrudservice_service.setCurrentStore(currentStore);
-		ManageProductCatalogCRUDService manageproductcatalogcrudservice_service = (ManageProductCatalogCRUDService) ServiceManager
-				.getAllInstancesOf("ManageProductCatalogCRUDService").get(0);
-		manageproductcatalogcrudservice_service.setCurrentCashDesk(currentCashDesk);
-		manageproductcatalogcrudservice_service.setCurrentStore(currentStore);
-		ManageCashDeskCRUDService managecashdeskcrudservice_service = (ManageCashDeskCRUDService) ServiceManager
-				.getAllInstancesOf("ManageCashDeskCRUDService").get(0);
-		managecashdeskcrudservice_service.setCurrentCashDesk(currentCashDesk);
-		managecashdeskcrudservice_service.setCurrentStore(currentStore);
-		ManageCashierCRUDService managecashiercrudservice_service = (ManageCashierCRUDService) ServiceManager
-				.getAllInstancesOf("ManageCashierCRUDService").get(0);
-		managecashiercrudservice_service.setCurrentCashDesk(currentCashDesk);
-		managecashiercrudservice_service.setCurrentStore(currentStore);
-		ManageItemCRUDService manageitemcrudservice_service = (ManageItemCRUDService) ServiceManager
-				.getAllInstancesOf("ManageItemCRUDService").get(0);
-		manageitemcrudservice_service.setCurrentCashDesk(currentCashDesk);
-		manageitemcrudservice_service.setCurrentStore(currentStore);
-		ManageSupplierCRUDService managesuppliercrudservice_service = (ManageSupplierCRUDService) ServiceManager
-				.getAllInstancesOf("ManageSupplierCRUDService").get(0);
-		managesuppliercrudservice_service.setCurrentCashDesk(currentCashDesk);
-		managesuppliercrudservice_service.setCurrentStore(currentStore);
-		CoCoMEOrderProducts cocomeorderproducts_service = (CoCoMEOrderProducts) ServiceManager
-				.getAllInstancesOf("CoCoMEOrderProducts").get(0);
-		cocomeorderproducts_service.setCurrentCashDesk(currentCashDesk);
-		cocomeorderproducts_service.setCurrentStore(currentStore);
-	}			
+				
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean openCashDesk(int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean openCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cd
 		CashDesk cd = null;
 		//no nested iterator --  iterator: any previous:any
-		for (CashDesk s : (List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk"))
+		for (CashDesk s : (List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class))
 		{
 			if (s.getId() == cashDeskID)
 			{
@@ -91,7 +64,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			cd.setIsOpened(true);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(this.getCurrentCashDesk() == cd
 			 && 
@@ -103,7 +76,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -116,15 +89,18 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	 
 	static {opINVRelatedEntity.put("openCashDesk", Arrays.asList("CashDesk",""));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean closeCashDesk(int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean closeCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get cd
 		CashDesk cd = null;
 		//no nested iterator --  iterator: any previous:any
-		for (CashDesk s : (List<CashDesk>)EntityManager.getAllInstancesOf("CashDesk"))
+		for (CashDesk s : (List<CashDesk>)EntityManager.getAllInstancesOf(CashDesk.class))
 		{
 			if (s.getId() == cashDeskID)
 			{
@@ -144,7 +120,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			cd.setIsOpened(false);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(this.getCurrentCashDesk() == cd
 			 && 
@@ -156,7 +132,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -169,15 +145,18 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	 
 	static {opINVRelatedEntity.put("closeCashDesk", Arrays.asList("CashDesk",""));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean openStore(int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean openStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get sto
 		Store sto = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Store s : (List<Store>)EntityManager.getAllInstancesOf("Store"))
+		for (Store s : (List<Store>)EntityManager.getAllInstancesOf(Store.class))
 		{
 			if (s.getId() == storeID)
 			{
@@ -197,7 +176,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			sto.setIsOpened(true);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(this.getCurrentStore() == sto
 			 && 
@@ -209,7 +188,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -222,15 +201,18 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	 
 	static {opINVRelatedEntity.put("openStore", Arrays.asList("","Store"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean closeStore(int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean closeStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get sto
 		Store sto = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Store s : (List<Store>)EntityManager.getAllInstancesOf("Store"))
+		for (Store s : (List<Store>)EntityManager.getAllInstancesOf(Store.class))
 		{
 			if (s.getId() == storeID)
 			{
@@ -249,7 +231,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			sto.setIsOpened(false);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(sto.getIsOpened() == false
 			 && 
@@ -259,7 +241,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -272,15 +254,18 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	 
 	static {opINVRelatedEntity.put("closeStore", Arrays.asList("Store"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean changePrice(int barcode, float newPrice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean changePrice(final Context ctx, int barcode, float newPrice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Item i : (List<Item>)EntityManager.getAllInstancesOf("Item"))
+		for (Item i : (List<Item>)EntityManager.getAllInstancesOf(Item.class))
 		{
 			if (i.getBarcode() == barcode)
 			{
@@ -299,7 +284,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			item.setPrice(newPrice);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(item.getPrice() == newPrice
 			 && 
@@ -309,7 +294,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -322,15 +307,18 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	 
 	static {opINVRelatedEntity.put("changePrice", Arrays.asList("Item"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean receiveOrderedProduct(int orderID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean receiveOrderedProduct(final Context ctx, int orderID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get op
 		OrderProduct op = null;
 		//no nested iterator --  iterator: any previous:any
-		for (OrderProduct i : (List<OrderProduct>)EntityManager.getAllInstancesOf("OrderProduct"))
+		for (OrderProduct i : (List<OrderProduct>)EntityManager.getAllInstancesOf(OrderProduct.class))
 		{
 			if (i.getId() == orderID)
 			{
@@ -358,7 +346,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(op.getOrderStatus() == OrderStatus.RECEIVED
 			 && 
@@ -383,7 +371,7 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -396,8 +384,11 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	 
 	static {opINVRelatedEntity.put("receiveOrderedProduct", Arrays.asList("OrderProduct","OrderEntry"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public List<Supplier> listSuppliers() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public List<Supplier> listSuppliers(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* previous state in post-condition*/
@@ -408,13 +399,13 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return ((List<Supplier>)EntityManager.getAllInstancesOf("Supplier"));
+			; return ((List<Supplier>)EntityManager.getAllInstancesOf(Supplier.class));
 		}
 		else
 		{
@@ -423,8 +414,11 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 	} 
 	 
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public List<Item> showStockReports() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public List<Item> showStockReports(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* previous state in post-condition*/
@@ -435,13 +429,13 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable {
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return ((List<Item>)EntityManager.getAllInstancesOf("Item"));
+			; return ((List<Item>)EntityManager.getAllInstancesOf(Item.class));
 		}
 		else
 		{

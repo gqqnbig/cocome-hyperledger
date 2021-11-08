@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Serializable {
 	
@@ -52,22 +55,21 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean createStore(int id, String name, String address, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean createStore(final Context ctx, int id, String name, String address, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get store
 		Store store = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf("Store"))
+		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf(Store.class))
 		{
 			if (sto.getId() == id)
 			{
@@ -92,7 +94,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			EntityManager.addObject("Store", sto);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			sto.getId() == id
@@ -103,7 +105,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			 && 
 			sto.getIsOpened() == isopened
 			 && 
-			StandardOPs.includes(((List<Store>)EntityManager.getAllInstancesOf("Store")), sto)
+			StandardOPs.includes(((List<Store>)EntityManager.getAllInstancesOf(Store.class)), sto)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -111,7 +113,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -125,15 +127,18 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	 
 	static {opINVRelatedEntity.put("createStore", Arrays.asList("Store"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public Store queryStore(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Store queryStore(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get store
 		Store store = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf("Store"))
+		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf(Store.class))
 		{
 			if (sto.getId() == id)
 			{
@@ -151,13 +156,13 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return store;
+			; return store;
 		}
 		else
 		{
@@ -166,15 +171,18 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	} 
 	 
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean modifyStore(int id, String name, String address, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean modifyStore(final Context ctx, int id, String name, String address, boolean isopened) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get store
 		Store store = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf("Store"))
+		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf(Store.class))
 		{
 			if (sto.getId() == id)
 			{
@@ -196,7 +204,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			store.setIsOpened(isopened);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(store.getId() == id
 			 && 
@@ -212,7 +220,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -226,15 +234,18 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	 
 	static {opINVRelatedEntity.put("modifyStore", Arrays.asList("Store"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean deleteStore(int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean deleteStore(final Context ctx, int id) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get store
 		Store store = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf("Store"))
+		for (Store sto : (List<Store>)EntityManager.getAllInstancesOf(Store.class))
 		{
 			if (sto.getId() == id)
 			{
@@ -247,15 +258,15 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(store) == false && StandardOPs.includes(((List<Store>)EntityManager.getAllInstancesOf("Store")), store)) 
+		if (StandardOPs.oclIsundefined(store) == false && StandardOPs.includes(((List<Store>)EntityManager.getAllInstancesOf(Store.class)), store)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Store", store);
 			
 			
-			refresh();
+			;
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Store>)EntityManager.getAllInstancesOf("Store")), store)
+			if (!(StandardOPs.excludes(((List<Store>)EntityManager.getAllInstancesOf(Store.class)), store)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -263,7 +274,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

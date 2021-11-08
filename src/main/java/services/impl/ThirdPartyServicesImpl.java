@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
 public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable {
 	
@@ -48,15 +51,14 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable 
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean thirdPartyCardPaymentService(String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean thirdPartyCardPaymentService(final Context ctx, String cardAccountNumber, LocalDate expiryDate, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* previous state in post-condition*/
@@ -67,7 +69,7 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable 
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
@@ -75,7 +77,7 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable 
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
