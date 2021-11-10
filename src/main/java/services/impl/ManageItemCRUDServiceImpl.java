@@ -18,7 +18,8 @@ import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 
-public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Serializable {
+@Contract
+public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -220,7 +221,9 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			item.getStockNumber() == stocknumber
 			 && 
 			item.getOrderPrice() == orderprice
-			 && 
+			 &&
+			EntityManager.saveModified(Item.class)
+			&&
 			true)) {
 				throw new PostconditionException();
 			}
