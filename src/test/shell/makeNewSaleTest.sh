@@ -5,7 +5,7 @@
 ./network.sh deployCC -ccn cocome -ccp $GITHUB_WORKSPACE -ccl java
 
 export FABRIC_CFG_PATH=$PWD/../config/
-source $GITHUB_WORKSPACE/.github/workflows/as-org1.sh
+source $GITHUB_WORKSPACE/src/test/shell/as-org1.sh
 
 pci -C mychannel -n cocome --waitForEvent -c '{"function":"ManageStoreCRUDServiceImpl:createStore","Args":["1","Target","Weyburn","false"]}'
 pci -C mychannel -n cocome --waitForEvent -c '{"function":"ManageCashDeskCRUDServiceImpl:createCashDesk","Args":["1","1","false"]}'
