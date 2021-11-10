@@ -38,4 +38,4 @@ jobs:
           export PATH=~/fabric-samples/bin:$PATH
           cd ~/fabric-samples/test-network
           ls -lh $GITHUB_WORKSPACE
-          $GITHUB_WORKSPACE/.github/workflows/makeNewSaleTest.sh 
+          $GITHUB_WORKSPACE/src/test/shell/makeNewSaleTest.sh
