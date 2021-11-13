@@ -37,5 +37,5 @@ jobs:
         run: |
           export PATH=~/fabric-samples/bin:$PATH
           cd ~/fabric-samples/test-network
-          ls -lh $GITHUB_WORKSPACE
+          wget https://raw.githubusercontent.com/kward/shunit2/d0a57ff2e6c5d8fbd27f9bebd1896037ce628f9d/shunit2
           $GITHUB_WORKSPACE/src/test/shell/makeNewSaleTest.sh
