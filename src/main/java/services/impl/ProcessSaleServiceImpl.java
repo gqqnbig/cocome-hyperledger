@@ -293,7 +293,9 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			if (!(currentSale.getAmount() == StandardOPs.sum(sub)
 			 && 
 			currentSale.getIsReadytoPay() == true
-			 && 
+			 &&
+			EntityManager.saveModified(Sale.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
