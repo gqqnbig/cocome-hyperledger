@@ -14,7 +14,15 @@ import org.hyperledger.fabric.contract.annotation.*;
 
 @DataType()
 public class SalesLineItem implements Serializable {
-	
+
+	// Without @JsonProperty, genson will not set this field during deserialization.
+	@JsonProperty
+	private final String guid = EntityManager.getGuid();
+
+	public String getGuid() {
+		return guid;
+	}
+
 	/* all primary attributes */
 	@Property()
 	private int quantity;
