@@ -221,6 +221,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			EntityManager.saveModified(Item.class)
 			 &&
+			EntityManager.saveModified(Sale.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
