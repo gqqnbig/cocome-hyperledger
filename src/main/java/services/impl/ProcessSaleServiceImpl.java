@@ -26,7 +26,6 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 
 	private static final Logger logger = Logger.getLogger("ProcessSaleServiceImpl");
 
-	private ChaincodeStub stub;
 	private static final Genson genson = new Genson();
 
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -48,7 +47,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 
 	private Integer getCurrentCashDeskPK() {
 		if (currentCashDeskPK == null) {
-			currentCashDeskPK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentCashDeskPK"), Integer.class);
+			currentCashDeskPK = genson.deserialize(EntityManager.stub.getStringState("CoCoMESystemImpl.currentCashDeskPK"), Integer.class);
 		}
 		logger.info("currentCashDeskPK=" + currentCashDeskPK);
 
@@ -57,13 +56,13 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 
 	private void setCurrentCashDeskPK(int currentCashDeskPK) {
 		String json = genson.serialize(currentCashDeskPK);
-		stub.putStringState("CoCoMESystemImpl.currentCashDeskPK", json);
+		EntityManager.stub.putStringState("CoCoMESystemImpl.currentCashDeskPK", json);
 		this.currentCashDeskPK = currentCashDeskPK;
 	}
 
 	private Integer getCurrentStorePK() {
 		if (currentStorePK == null) {
-			currentStorePK = genson.deserialize(stub.getStringState("CoCoMESystemImpl.currentStorePK"), Integer.class);
+			currentStorePK = genson.deserialize(EntityManager.stub.getStringState("CoCoMESystemImpl.currentStorePK"), Integer.class);
 		}
 
 		return currentStorePK;
@@ -71,7 +70,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 
 	private void setCurrentStorePK(int currentStorePK) {
 		String json = genson.serialize(currentStorePK);
-		stub.putStringState("CoCoMESystemImpl.currentStorePK", json);
+		EntityManager.stub.putStringState("CoCoMESystemImpl.currentStorePK", json);
 		this.currentStorePK = currentStorePK;
 	}
 
@@ -119,7 +118,6 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	public boolean makeNewSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
-		this.stub = stub;
 
 		Sale currentSale = getCurrentSale();
 
@@ -468,13 +466,13 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	}
 	public Sale getCurrentSale() {
 		if (currentSalePK == null) {
-			currentSalePK = stub.getStringState("ProcessSaleServiceImpl.currentSalePK");
+			currentSalePK = EntityManager.stub.getStringState("ProcessSaleServiceImpl.currentSalePK");
 		}
 		return EntityManager.getSaleByPK(currentSalePK);
 	}
 
 	public void setCurrentSale(Sale currentsale) {
-		stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getGuid());
+		EntityManager.stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getGuid());
 		currentSalePK = currentsale.getGuid();
 	}
 	public PaymentMethod getCurrentPaymentMethod() {
