@@ -237,7 +237,9 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			sli.getSubamount() == item.getPrice()*quantity
 			 && 
 			StandardOPs.includes(((List<SalesLineItem>)EntityManager.getAllInstancesOf(SalesLineItem.class)), sli)
-			 && 
+			 &&
+			EntityManager.saveModified(Sale.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
