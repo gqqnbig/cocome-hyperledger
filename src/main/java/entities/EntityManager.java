@@ -634,6 +634,18 @@ public class EntityManager {
 		return OrderProductInstances.removeAll(os);
 	}
 
+
+	public static Item getItemByPK(Integer pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Item.class)) {
+			if (i.getBarcode() == pk) {
+				return i;
+			}
+		}
+		return null;
+	}
+
 	public static CashDesk getCashDeskByPK(Integer pk) {
 		if (pk == null)
 			return null;

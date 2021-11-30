@@ -1,5 +1,7 @@
 package entities;
 
+import com.owlike.genson.annotation.JsonIgnore;
+import com.owlike.genson.annotation.JsonProperty;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -20,9 +22,11 @@ public class SalesLineItem implements Serializable {
 	private float subamount;
 	
 	/* all references */
-	private Sale BelongedSale; 
-	private Item BelongedItem; 
-	
+	@JsonProperty
+	private String BelongedSalePK;
+	@JsonProperty
+	private Integer BelongedItemPK;
+
 	/* all get and set functions */
 	public int getQuantity() {
 		return quantity;
@@ -40,21 +44,23 @@ public class SalesLineItem implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Sale getBelongedSale() {
-		return BelongedSale;
-	}	
-	
+		return EntityManager.getSaleByPK(BelongedSalePK);
+	}
+
 	public void setBelongedSale(Sale sale) {
-		this.BelongedSale = sale;
-	}			
+		this.BelongedSalePK = sale.getGuid();
+	}
+
+	@JsonIgnore
 	public Item getBelongedItem() {
-		return BelongedItem;
-	}	
-	
+		return EntityManager.getItemByPK(BelongedItemPK);
+	}
+
 	public void setBelongedItem(Item item) {
-		this.BelongedItem = item;
-	}			
-	
+		this.BelongedItemPK = item.getBarcode();
+	}
 
 
 }
