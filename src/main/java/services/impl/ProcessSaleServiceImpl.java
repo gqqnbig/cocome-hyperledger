@@ -28,7 +28,6 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 
 	private static final Logger logger = Logger.getLogger("ProcessSaleServiceImpl");
 
-	private ChaincodeStub stub;
 
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
 	
@@ -99,7 +98,6 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	public boolean makeNewSale(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
-		this.stub = stub;
 
 		Sale currentSale = getCurrentSale();
 
@@ -459,13 +457,13 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	}
 	public Sale getCurrentSale() {
 		if (currentSalePK == null) {
-			currentSalePK = stub.getStringState("ProcessSaleServiceImpl.currentSalePK");
+			currentSalePK = EntityManager.stub.getStringState("ProcessSaleServiceImpl.currentSalePK");
 		}
 		return EntityManager.getSaleByPK(currentSalePK);
 	}
 
 	public void setCurrentSale(Sale currentsale) {
-		stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getGuid());
+		EntityManager.stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getGuid());
 		currentSalePK = currentsale.getGuid();
 	}
 	public PaymentMethod getCurrentPaymentMethod() {

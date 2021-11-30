@@ -30,7 +30,6 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
 	
-	private ChaincodeStub stub;
 	
 	ThirdPartyServices services;
 			
@@ -46,7 +45,6 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	public boolean openCashDesk(final Context ctx, int cashDeskID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
-		this.stub = stub;
 
 
 		/* Code generated for contract definition */
@@ -165,7 +163,6 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 	public boolean openStore(final Context ctx, int storeID) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
-		this.stub = stub;
 
 
 		/* Code generated for contract definition */
