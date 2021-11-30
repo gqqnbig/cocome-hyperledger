@@ -634,6 +634,16 @@ public class EntityManager {
 		return OrderProductInstances.removeAll(os);
 	}
 
+	public static SalesLineItem getSalesLineItemByPK(String pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(SalesLineItem.class)) {
+			if (Objects.equals(i.getGuid(), pk)) {
+				return i;
+			}
+		}
+		return null;
+	}
 
 	public static Item getItemByPK(Integer pk) {
 		if (pk == null)

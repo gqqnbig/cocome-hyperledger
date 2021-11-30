@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.stream.Collectors;
+
 import org.hyperledger.fabric.contract.annotation.*;
 
 @DataType()
@@ -38,9 +40,10 @@ public class Sale implements Serializable {
 	private Integer BelongedstorePK;
 	@JsonProperty
 	private Integer BelongedCashDeskPK;
-	private List<SalesLineItem> ContainedSalesLine = new LinkedList<SalesLineItem>(); 
-	private Payment AssoicatedPayment; 
-	
+	@JsonProperty
+	private List<String> ContainedSalesLinePKs = new LinkedList<String>();
+	private Payment AssoicatedPayment;
+
 	/* all get and set functions */
 	public LocalDate getTime() {
 		return time;
@@ -88,17 +91,19 @@ public class Sale implements Serializable {
 	
 	public void setBelongedCashDesk(CashDesk cashdesk) {
 		this.BelongedCashDeskPK = cashdesk.getId();
-	}			
-	public List<SalesLineItem> getContainedSalesLine() {
-		return ContainedSalesLine;
-	}	
-	
-	public void addContainedSalesLine(SalesLineItem saleslineitem) {
-		this.ContainedSalesLine.add(saleslineitem);
 	}
-	
+
+	@JsonIgnore
+	public List<SalesLineItem> getContainedSalesLine() {
+		return ContainedSalesLinePKs.stream().map(EntityManager::getSalesLineItemByPK).collect(Collectors.toList());
+	}
+
+	public void addContainedSalesLine(SalesLineItem saleslineitem) {
+		this.ContainedSalesLinePKs.add(saleslineitem.getGuid());
+	}
+
 	public void deleteContainedSalesLine(SalesLineItem saleslineitem) {
-		this.ContainedSalesLine.remove(saleslineitem);
+		this.ContainedSalesLinePKs.remove(saleslineitem.getGuid());
 	}
 	public Payment getAssoicatedPayment() {
 		return AssoicatedPayment;
