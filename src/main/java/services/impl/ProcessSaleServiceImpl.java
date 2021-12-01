@@ -346,6 +346,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			StandardOPs.includes(((List<CashPayment>)EntityManager.getAllInstancesOf(CashPayment.class)), cp)
 			 && 
+					EntityManager.saveModified(Sale.class)
+					&&
 			true)) {
 				throw new PostconditionException();
 			}
