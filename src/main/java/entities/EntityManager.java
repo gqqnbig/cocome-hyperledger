@@ -634,6 +634,29 @@ public class EntityManager {
 		return OrderProductInstances.removeAll(os);
 	}
 
+
+	public static CardPayment getCardPaymentByPK(String pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(CardPayment.class)) {
+			if (Objects.equals(i.getGuid(), pk)) {
+				return i;
+			}
+		}
+		return null;
+	}
+
+	public static CashPayment getCashPaymentByPK(String pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(CashPayment.class)) {
+			if (Objects.equals(i.getGuid(), pk)) {
+				return i;
+			}
+		}
+		return null;
+	}
+
 	public static SalesLineItem getSalesLineItemByPK(String pk) {
 		if (pk == null)
 			return null;
