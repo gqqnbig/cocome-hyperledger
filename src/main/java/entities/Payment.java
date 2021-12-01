@@ -1,5 +1,6 @@
 package entities;
 
+import com.owlike.genson.annotation.JsonProperty;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -37,13 +38,12 @@ public class Payment implements Serializable {
 	
 	/* all functions for reference*/
 	public Sale getBelongedSale() {
-		return BelongedSale;
-	}	
-	
+		return EntityManager.getSaleByPK(BelongedSalePK);
+	}
+
 	public void setBelongedSale(Sale sale) {
-		this.BelongedSale = sale;
-	}			
-	
+		this.BelongedSalePK = sale.getGuid();
+	}
 
 
 }
