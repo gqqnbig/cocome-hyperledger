@@ -240,6 +240,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 &&
 			EntityManager.saveModified(Sale.class)
 			 &&
+			EntityManager.saveModified(Item.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -362,6 +364,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 					cp.getBalance() == amount - currentSale.getAmount()
 					&&
 			StandardOPs.includes(((List<CashPayment>)EntityManager.getAllInstancesOf(CashPayment.class)), cp)
+					&&
+					EntityManager.saveModified(Sale.class)
 					&&
 					true)) {
 				throw new PostconditionException();
