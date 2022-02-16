@@ -1,5 +1,6 @@
 package entities;
 
+import com.owlike.genson.annotation.*;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -17,6 +18,10 @@ public class CardPayment extends Payment  implements Serializable {
 	// Without @JsonProperty, genson will not set this field during deserialization.
 	@JsonProperty
 	private final String guid = EntityManager.getGuid();
+
+	public String getGuid() {
+		return guid;
+	}
 	
 	/* all primary attributes */
 	@Property()
