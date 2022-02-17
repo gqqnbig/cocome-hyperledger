@@ -25,6 +25,10 @@ public class Cashier implements Serializable {
 	private int WorkedStorePK; 
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return id;
+	}
+
 	public int getId() {
 		return id;
 	}	

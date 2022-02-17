@@ -19,7 +19,7 @@ public class OrderEntry implements Serializable {
 	@JsonProperty
 	private final String guid = EntityManager.getGuid();
 
-	public String getGuid() {
+	public Object getPK() {
 		return guid;
 	}
 	

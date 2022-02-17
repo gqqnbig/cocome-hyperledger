@@ -21,8 +21,7 @@ public class Sale implements Serializable {
 	// Without @JsonProperty, genson will not set this field during deserialization.
 	@JsonProperty
 	private final String guid = EntityManager.getGuid();
-
-	public String getGuid() {
+	public Object getPK() {
 		return guid;
 	}
 

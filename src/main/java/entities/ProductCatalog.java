@@ -25,6 +25,10 @@ public class ProductCatalog implements Serializable {
 	private List<Integer> ContainedItemsPKs = new LinkedList<>(); 
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return id;
+	}
+
 	public int getId() {
 		return id;
 	}	

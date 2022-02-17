@@ -31,6 +31,10 @@ public class Item implements Serializable {
 	private int BelongedCatalogPK; 
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return barcode;
+	}
+
 	public int getBarcode() {
 		return barcode;
 	}	

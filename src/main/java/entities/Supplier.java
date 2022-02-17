@@ -22,6 +22,10 @@ public class Supplier implements Serializable {
 	/* all references */
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return id;
+	}
+
 	public int getId() {
 		return id;
 	}	
