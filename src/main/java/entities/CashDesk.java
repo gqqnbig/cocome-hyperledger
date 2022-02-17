@@ -29,6 +29,10 @@ public class CashDesk implements Serializable {
 	private int BelongedStorePK; 
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return id;
+	}
+
 	public int getId() {
 		return id;
 	}	

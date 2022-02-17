@@ -37,6 +37,10 @@ public class Store implements Serializable {
 	private List<String> SalesPKs = new LinkedList<>(); 
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return id;
+	}
+
 	public int getId() {
 		return id;
 	}	

@@ -32,6 +32,10 @@ public class OrderProduct implements Serializable {
 	private List<String> ContainedEntriesPKs = new LinkedList<>(); 
 	
 	/* all get and set functions */
+	public Object getPK() {
+		return id;
+	}
+
 	public int getId() {
 		return id;
 	}	
