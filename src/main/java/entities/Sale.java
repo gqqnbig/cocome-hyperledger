@@ -41,9 +41,9 @@ public class Sale implements Serializable {
 	@JsonProperty
 	private int BelongedCashDeskPK; 
 	@JsonProperty
-	private List<String> ContainedSalesLinePKs = new LinkedList<>(); 
+	private List<Object> ContainedSalesLinePKs = new LinkedList<>();
 	@JsonProperty
-	private String AssoicatedPaymentPK; 
+	private Object AssoicatedPaymentPK;
 	
 	/* all get and set functions */
 	public LocalDate getTime() {
@@ -100,27 +100,20 @@ public class Sale implements Serializable {
 	}
 
 	public void addContainedSalesLine(SalesLineItem saleslineitem) {
-		this.ContainedSalesLinePKs.add(saleslineitem.getGuid());
+		this.ContainedSalesLinePKs.add(saleslineitem.getPK());
 	}
 
 	public void deleteContainedSalesLine(SalesLineItem saleslineitem) {
-		this.ContainedSalesLinePKs.remove(saleslineitem.getGuid());
+		this.ContainedSalesLinePKs.remove(saleslineitem.getPK());
 	}
 
 	@JsonIgnore
 	public Payment getAssoicatedPayment() {
-		Payment p = EntityManager.getCashPaymentByPK(AssoicatedPaymentPK);
-		if (p != null)
-			return p;
-		p = EntityManager.getCardPaymentByPK(AssoicatedPaymentPK);
-		if (p != null)
-			return p;
-
-		return null;
+		return EntityManager.getCashPaymentByPK(AssoicatedPaymentPK);
 	}
 
 	public void setAssoicatedPayment(Payment payment) {
-		this.AssoicatedPaymentPK = payment.getGuid();
+		this.AssoicatedPaymentPK = payment.getPK();
 	}
 
 

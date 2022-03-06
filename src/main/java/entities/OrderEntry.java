@@ -31,8 +31,8 @@ public class OrderEntry implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private int ItemPK; 
-	
+	private Object ItemPK;
+
 	/* all get and set functions */
 	public int getQuantity() {
 		return quantity;
@@ -50,14 +50,14 @@ public class OrderEntry implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Item getItem() {
-		return Item;
-	}	
-	
+		return EntityManager.getItemByPK(ItemPK);
+	}
+
 	public void setItem(Item item) {
-		this.Item = item;
-	}			
-	
+		this.ItemPK = item.getPK();
+	}
 
 
 }

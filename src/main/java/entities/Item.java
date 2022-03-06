@@ -28,8 +28,8 @@ public class Item implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private int BelongedCatalogPK; 
-	
+	private Object BelongedCatalogPK;
+
 	/* all get and set functions */
 	public Object getPK() {
 		return barcode;
@@ -72,14 +72,15 @@ public class Item implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public ProductCatalog getBelongedCatalog() {
-		return BelongedCatalog;
-	}	
-	
+		return EntityManager.getProductCatalogByPK(BelongedCatalogPK);
+	}
+
 	public void setBelongedCatalog(ProductCatalog productcatalog) {
-		this.BelongedCatalog = productcatalog;
-	}			
-	
+		this.BelongedCatalogPK = productcatalog.getPK();
+	}
+
 
 	/* invarints checking*/
 	public boolean Item_UniqueBarcode() {
