@@ -3,16 +3,17 @@ package services;
 import entities.*;
 import java.util.List;
 import java.time.LocalDate;
+import org.hyperledger.fabric.contract.Context;
 
 
 public interface CoCoMEOrderProducts {
 
 	/* all system operations of the use case*/
-	boolean makeNewOrder(int orderid) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	List<Item> listAllOutOfStoreProducts() throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean orderItem(int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean chooseSupplier(int supplierID) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
-	boolean placeOrder() throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean makeNewOrder(final Context ctx, int orderid) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	Item[] listAllOutOfStoreProducts(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean orderItem(final Context ctx, int barcode, int quantity) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean chooseSupplier(final Context ctx, int supplierID) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
+	boolean placeOrder(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException;
 	
 	/* all get and set functions for temp property*/
 	OrderProduct getCurrentOrderProduct();
