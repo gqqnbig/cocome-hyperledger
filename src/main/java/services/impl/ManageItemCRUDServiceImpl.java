@@ -14,8 +14,14 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
+import com.owlike.genson.Genson;
 
-public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Serializable {
+@Contract
+public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Serializable, ContractInterface {
+	private static final Genson genson = new Genson();
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -54,21 +60,24 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf("CoCoMESystem").get(0);
+		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
 		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
 		cocomesystem_service.setCurrentStore(currentStore);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean createItem(int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean createItem(final Context ctx, int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf("Item"))
+		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf(Item.class))
 		{
 			if (ite.getBarcode() == barcode)
 			{
@@ -107,7 +116,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			 && 
 			ite.getOrderPrice() == orderprice
 			 && 
-			StandardOPs.includes(((List<Item>)EntityManager.getAllInstancesOf("Item")), ite)
+			StandardOPs.includes(((List<Item>)EntityManager.getAllInstancesOf(Item.class)), ite)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -129,15 +138,18 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("createItem", Arrays.asList("Item"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public Item queryItem(int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Item queryItem(final Context ctx, int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf("Item"))
+		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf(Item.class))
 		{
 			if (ite.getBarcode() == barcode)
 			{
@@ -170,15 +182,18 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	} 
 	 
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean modifyItem(int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean modifyItem(final Context ctx, int barcode, String name, float price, int stocknumber, float orderprice) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf("Item"))
+		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf(Item.class))
 		{
 			if (ite.getBarcode() == barcode)
 			{
@@ -233,15 +248,18 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("modifyItem", Arrays.asList("Item"));}
 	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
 	@SuppressWarnings("unchecked")
-	public boolean deleteItem(int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public boolean deleteItem(final Context ctx, int barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.stub = stub;
 		
 		
 		/* Code generated for contract definition */
 		//Get item
 		Item item = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf("Item"))
+		for (Item ite : (List<Item>)EntityManager.getAllInstancesOf(Item.class))
 		{
 			if (ite.getBarcode() == barcode)
 			{
@@ -254,7 +272,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(item) == false && StandardOPs.includes(((List<Item>)EntityManager.getAllInstancesOf("Item")), item)) 
+		if (StandardOPs.oclIsundefined(item) == false && StandardOPs.includes(((List<Item>)EntityManager.getAllInstancesOf(Item.class)), item)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Item", item);
@@ -262,7 +280,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Item>)EntityManager.getAllInstancesOf("Item")), item)
+			if (!(StandardOPs.excludes(((List<Item>)EntityManager.getAllInstancesOf(Item.class)), item)
 			 && 
 			true)) {
 				throw new PostconditionException();
