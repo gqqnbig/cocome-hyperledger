@@ -8,29 +8,38 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
 
+@DataType()
 public class CardPayment extends Payment  implements Serializable {
+
+	// Without @JsonProperty, genson will not set this field during deserialization.
+	@JsonProperty
+	private final String guid = EntityManager.getGuid();
 	
 	/* all primary attributes */
-	private String CardAccountNumber;
-	private LocalDate ExpiryDate;
+	@Property()
+	private String cardAccountNumber;
+	@Property()
+	private LocalDate expiryDate;
 	
 	/* all references */
 	
 	/* all get and set functions */
 	public String getCardAccountNumber() {
-		return CardAccountNumber;
+		return cardAccountNumber;
 	}	
 	
 	public void setCardAccountNumber(String cardaccountnumber) {
-		this.CardAccountNumber = cardaccountnumber;
+		this.cardAccountNumber = cardaccountnumber;
 	}
 	public LocalDate getExpiryDate() {
-		return ExpiryDate;
+		return expiryDate;
 	}	
 	
 	public void setExpiryDate(LocalDate expirydate) {
-		this.ExpiryDate = expirydate;
+		this.expiryDate = expirydate;
 	}
 	
 	/* all functions for reference*/

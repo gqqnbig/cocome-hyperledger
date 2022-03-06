@@ -8,31 +8,42 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
 
+@DataType()
 public class SalesLineItem implements Serializable {
+
+	// Without @JsonProperty, genson will not set this field during deserialization.
+	@JsonProperty
+	private final String guid = EntityManager.getGuid();
 	
 	/* all primary attributes */
-	private int Quantity;
-	private float Subamount;
+	@Property()
+	private int quantity;
+	@Property()
+	private float subamount;
 	
 	/* all references */
-	private Sale BelongedSale; 
-	private Item BelongedItem; 
+	@JsonProperty
+	private String BelongedSalePK; 
+	@JsonProperty
+	private int BelongedItemPK; 
 	
 	/* all get and set functions */
 	public int getQuantity() {
-		return Quantity;
+		return quantity;
 	}	
 	
 	public void setQuantity(int quantity) {
-		this.Quantity = quantity;
+		this.quantity = quantity;
 	}
 	public float getSubamount() {
-		return Subamount;
+		return subamount;
 	}	
 	
 	public void setSubamount(float subamount) {
-		this.Subamount = subamount;
+		this.subamount = subamount;
 	}
 	
 	/* all functions for reference*/
