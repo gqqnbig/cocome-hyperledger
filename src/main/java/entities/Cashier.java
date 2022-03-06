@@ -22,8 +22,8 @@ public class Cashier implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private int WorkedStorePK; 
-	
+	private Object WorkedStorePK;
+
 	/* all get and set functions */
 	public Object getPK() {
 		return id;
@@ -45,14 +45,15 @@ public class Cashier implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Store getWorkedStore() {
-		return WorkedStore;
-	}	
-	
+		return EntityManager.getStoreByPK(WorkedStorePK);
+	}
+
 	public void setWorkedStore(Store store) {
-		this.WorkedStore = store;
-	}			
-	
+		this.WorkedStorePK = store.getPK();
+	}
+
 
 	/* invarints checking*/
 	public boolean Cashier_UniqueCashierID() {

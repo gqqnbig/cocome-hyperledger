@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.stream.Collectors;
+
 import org.hyperledger.fabric.contract.annotation.*;
 import com.owlike.genson.annotation.*;
 
@@ -24,10 +26,10 @@ public class CashDesk implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private List<String> ContainedSalesPKs = new LinkedList<>(); 
+	private List<Object> ContainedSalesPKs = new LinkedList<>();
 	@JsonProperty
-	private int BelongedStorePK; 
-	
+	private Object BelongedStorePK;
+
 	/* all get and set functions */
 	public Object getPK() {
 		return id;
@@ -56,25 +58,29 @@ public class CashDesk implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	//The getter or setter of PK fields must be marked with @JsonIgnore.
+	@JsonIgnore
 	public List<Sale> getContainedSales() {
-		return ContainedSales;
-	}	
-	
+		return ContainedSalesPKs.stream().map(EntityManager::getSaleByPK).collect(Collectors.toList());
+	}
+
 	public void addContainedSales(Sale sale) {
-		this.ContainedSales.add(sale);
+		this.ContainedSalesPKs.add(sale.getPK());
 	}
-	
+
 	public void deleteContainedSales(Sale sale) {
-		this.ContainedSales.remove(sale);
+		this.ContainedSalesPKs.remove(sale.getPK());
 	}
+
+	@JsonIgnore
 	public Store getBelongedStore() {
-		return BelongedStore;
-	}	
-	
+		return EntityManager.getStoreByPK(BelongedStorePK);
+	}
+
 	public void setBelongedStore(Store store) {
-		this.BelongedStore = store;
-	}			
-	
+		this.BelongedStorePK = store.getPK();
+	}
+
 
 	/* invarints checking*/
 	public boolean CashDesk_UniqueCashDeskId() {

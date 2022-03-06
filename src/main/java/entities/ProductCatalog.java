@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.stream.Collectors;
+
 import org.hyperledger.fabric.contract.annotation.*;
 import com.owlike.genson.annotation.*;
 
@@ -22,8 +24,8 @@ public class ProductCatalog implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private List<Integer> ContainedItemsPKs = new LinkedList<>(); 
-	
+	private List<Object> ContainedItemsPKs = new LinkedList<>();
+
 	/* all get and set functions */
 	public Object getPK() {
 		return id;
@@ -45,16 +47,17 @@ public class ProductCatalog implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public List<Item> getContainedItems() {
-		return ContainedItems;
-	}	
-	
-	public void addContainedItems(Item item) {
-		this.ContainedItems.add(item);
+		return ContainedItemsPKs.stream().map(EntityManager::getItemByPK).collect(Collectors.toList());
 	}
-	
+
+	public void addContainedItems(Item item) {
+		this.ContainedItemsPKs.add(item.getPK());
+	}
+
 	public void deleteContainedItems(Item item) {
-		this.ContainedItems.remove(item);
+		this.ContainedItemsPKs.remove(item.getPK());
 	}
 	
 

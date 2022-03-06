@@ -1,6 +1,7 @@
 package entities;
 
 import services.impl.StandardOPs;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.stream.Collectors;
+
 import org.hyperledger.fabric.contract.annotation.*;
 import com.owlike.genson.annotation.*;
 
@@ -26,16 +29,16 @@ public class Store implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private List<Integer> AssociationCashdeskesPKs = new LinkedList<>(); 
+	private List<Object> AssociationCashdeskesPKs = new LinkedList<>();
 	@JsonProperty
-	private List<Integer> ProductcatalogsPKs = new LinkedList<>(); 
+	private List<Object> ProductcatalogsPKs = new LinkedList<>();
 	@JsonProperty
-	private List<Integer> ItemsPKs = new LinkedList<>(); 
+	private List<Object> ItemsPKs = new LinkedList<>();
 	@JsonProperty
-	private List<Integer> CashiersPKs = new LinkedList<>(); 
+	private List<Object> CashiersPKs = new LinkedList<>();
 	@JsonProperty
-	private List<String> SalesPKs = new LinkedList<>(); 
-	
+	private List<Object> SalesPKs = new LinkedList<>();
+
 	/* all get and set functions */
 	public Object getPK() {
 		return id;
@@ -71,60 +74,69 @@ public class Store implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public List<CashDesk> getAssociationCashdeskes() {
-		return AssociationCashdeskes;
-	}	
-	
+		return AssociationCashdeskesPKs.stream().map(EntityManager::getCashDeskByPK).collect(Collectors.toList());
+	}
+
 	public void addAssociationCashdeskes(CashDesk cashdesk) {
-		this.AssociationCashdeskes.add(cashdesk);
+		this.AssociationCashdeskesPKs.add(cashdesk.getPK());
 	}
-	
+
 	public void deleteAssociationCashdeskes(CashDesk cashdesk) {
-		this.AssociationCashdeskes.remove(cashdesk);
+		this.AssociationCashdeskesPKs.remove(cashdesk.getPK());
 	}
+
+	@JsonIgnore
 	public List<ProductCatalog> getProductcatalogs() {
-		return Productcatalogs;
-	}	
-	
+		return ProductcatalogsPKs.stream().map(EntityManager::getProductCatalogByPK).collect(Collectors.toList());
+	}
+
 	public void addProductcatalogs(ProductCatalog productcatalog) {
-		this.Productcatalogs.add(productcatalog);
+		this.ProductcatalogsPKs.add(productcatalog.getPK());
 	}
-	
+
 	public void deleteProductcatalogs(ProductCatalog productcatalog) {
-		this.Productcatalogs.remove(productcatalog);
+		this.ProductcatalogsPKs.remove(productcatalog.getPK());
 	}
+
+	@JsonIgnore
 	public List<Item> getItems() {
-		return Items;
-	}	
-	
+		return ItemsPKs.stream().map(EntityManager::getItemByPK).collect(Collectors.toList());
+	}
+
 	public void addItems(Item item) {
-		this.Items.add(item);
+		this.ItemsPKs.add(item.getPK());
 	}
-	
+
 	public void deleteItems(Item item) {
-		this.Items.remove(item);
+		this.ItemsPKs.remove(item.getPK());
 	}
+
+	@JsonIgnore
 	public List<Cashier> getCashiers() {
-		return Cashiers;
-	}	
-	
+		return CashiersPKs.stream().map(EntityManager::getCashierByPK).collect(Collectors.toList());
+	}
+
 	public void addCashiers(Cashier cashier) {
-		this.Cashiers.add(cashier);
+		this.CashiersPKs.add(cashier.getPK());
 	}
-	
+
 	public void deleteCashiers(Cashier cashier) {
-		this.Cashiers.remove(cashier);
+		this.CashiersPKs.remove(cashier.getPK());
 	}
+
+	@JsonIgnore
 	public List<Sale> getSales() {
-		return Sales;
-	}	
-	
-	public void addSales(Sale sale) {
-		this.Sales.add(sale);
+		return SalesPKs.stream().map(EntityManager::getSaleByPK).collect(Collectors.toList());
 	}
-	
+
+	public void addSales(Sale sale) {
+		this.SalesPKs.add(sale.getPK());
+	}
+
 	public void deleteSales(Sale sale) {
-		this.Sales.remove(sale);
+		this.SalesPKs.remove(sale.getPK());
 	}
 	
 

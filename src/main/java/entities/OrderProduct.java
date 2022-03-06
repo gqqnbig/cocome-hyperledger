@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.stream.Collectors;
+
 import org.hyperledger.fabric.contract.annotation.*;
 import com.owlike.genson.annotation.*;
 
@@ -27,10 +29,10 @@ public class OrderProduct implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private int SupplierPK; 
+	private Object SupplierPK;
 	@JsonProperty
-	private List<String> ContainedEntriesPKs = new LinkedList<>(); 
-	
+	private List<Object> ContainedEntriesPKs = new LinkedList<>();
+
 	/* all get and set functions */
 	public Object getPK() {
 		return id;
@@ -66,23 +68,26 @@ public class OrderProduct implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Supplier getSupplier() {
-		return Supplier;
-	}	
-	
-	public void setSupplier(Supplier supplier) {
-		this.Supplier = supplier;
-	}			
-	public List<OrderEntry> getContainedEntries() {
-		return ContainedEntries;
-	}	
-	
-	public void addContainedEntries(OrderEntry orderentry) {
-		this.ContainedEntries.add(orderentry);
+		return EntityManager.getSupplierByPK(SupplierPK);
 	}
-	
+
+	public void setSupplier(Supplier supplier) {
+		this.SupplierPK = supplier.getPK();
+	}
+
+	@JsonIgnore
+	public List<OrderEntry> getContainedEntries() {
+		return ContainedEntriesPKs.stream().map(EntityManager::getOrderEntryByPK).collect(Collectors.toList());
+	}
+
+	public void addContainedEntries(OrderEntry orderentry) {
+		this.ContainedEntriesPKs.add(orderentry.getPK());
+	}
+
 	public void deleteContainedEntries(OrderEntry orderentry) {
-		this.ContainedEntries.remove(orderentry);
+		this.ContainedEntriesPKs.remove(orderentry.getPK());
 	}
 	
 

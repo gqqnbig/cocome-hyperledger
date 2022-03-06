@@ -442,7 +442,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	
 	/* temp property for controller */
 	private SalesLineItem currentSaleLine;
-	private String currentSalePK;
+	private Object currentSalePK;
 	private PaymentMethod currentPaymentMethod;
 			
 	/* all get and set functions for temp property*/
@@ -461,8 +461,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	}
 
 	public void setCurrentSale(Sale currentsale) {
-		EntityManager.stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getGuid());
-		currentSalePK = currentsale.getGuid();
+		EntityManager.stub.putStringState("ProcessSaleServiceImpl.currentSalePK", currentsale.getPK().toString());
+		currentSalePK = currentsale.getPK();
 	}
 	public PaymentMethod getCurrentPaymentMethod() {
 		return currentPaymentMethod;

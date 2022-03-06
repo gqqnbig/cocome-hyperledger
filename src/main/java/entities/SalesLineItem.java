@@ -31,10 +31,10 @@ public class SalesLineItem implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private String BelongedSalePK; 
+	private Object BelongedSalePK;
 	@JsonProperty
-	private int BelongedItemPK; 
-	
+	private Object BelongedItemPK;
+
 	/* all get and set functions */
 	public int getQuantity() {
 		return quantity;
@@ -58,7 +58,7 @@ public class SalesLineItem implements Serializable {
 	}
 
 	public void setBelongedSale(Sale sale) {
-		this.BelongedSalePK = sale.getGuid();
+		this.BelongedSalePK = sale.getPK();
 	}
 
 	@JsonIgnore
@@ -67,7 +67,7 @@ public class SalesLineItem implements Serializable {
 	}
 
 	public void setBelongedItem(Item item) {
-		this.BelongedItemPK = item.getBarcode();
+		this.BelongedItemPK = item.getPK();
 	}
 
 
