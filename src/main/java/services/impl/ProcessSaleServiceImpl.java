@@ -18,6 +18,7 @@ import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 import com.owlike.genson.Genson;
+import java.util.*;
 
 @Contract
 public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable, ContractInterface {
@@ -37,33 +38,55 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	//Shared variable from system services
 	
 	/* Shared variable from system services and get()/set() methods */
-	private CashDesk currentCashDesk;
-	private Store currentStore;
+	private Object currentCashDeskPK;
+	private Object currentStorePK;
 			
 	/* all get and set functions for temp property*/
 	public CashDesk getCurrentCashDesk() {
-		return currentCashDesk;
+		return EntityManager.getCashDeskByPK(getCurrentCashDeskPK());
+	}
+
+	private Object getCurrentCashDeskPK() {
+		if (currentCashDeskPK == null)
+			currentCashDeskPK = genson.deserialize(EntityManager.stub.getStringState("system.currentCashDeskPK"), Integer.class);
+	
+		return currentCashDeskPK;
 	}	
 	
 	public void setCurrentCashDesk(CashDesk currentcashdesk) {
-		this.currentCashDesk = currentcashdesk;
+		setCurrentCashDeskPK(currentcashdesk.getPK());
+	}
+
+	private void setCurrentCashDeskPK(Object currentCashDeskPK) {
+		String json = genson.serialize(currentCashDeskPK);
+		EntityManager.stub.putStringState("system.currentCashDeskPK", json);
+		this.currentCashDeskPK = currentCashDeskPK;
 	}
 	public Store getCurrentStore() {
-		return currentStore;
+		return EntityManager.getStoreByPK(getCurrentStorePK());
+	}
+
+	private Object getCurrentStorePK() {
+		if (currentStorePK == null)
+			currentStorePK = genson.deserialize(EntityManager.stub.getStringState("system.currentStorePK"), Integer.class);
+	
+		return currentStorePK;
 	}	
 	
 	public void setCurrentStore(Store currentstore) {
-		this.currentStore = currentstore;
+		setCurrentStorePK(currentstore.getPK());
+	}
+
+	private void setCurrentStorePK(Object currentStorePK) {
+		String json = genson.serialize(currentStorePK);
+		EntityManager.stub.putStringState("system.currentStorePK", json);
+		this.currentStorePK = currentStorePK;
 	}
 				
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -76,25 +99,25 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(currentCashDesk) == false && currentCashDesk.getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) 
+		if (StandardOPs.oclIsundefined(getCurrentCashDesk()) == false && getCurrentCashDesk().getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) 
 		{ 
 			/* Logic here */
 			Sale s = null;
 			s = (Sale) EntityManager.createObject("Sale");
-			s.setBelongedCashDesk(currentCashDesk);
-			currentCashDesk.addContainedSales(s);
+			s.setBelongedCashDesk(getCurrentCashDesk());
+			getCurrentCashDesk().addContainedSales(s);
 			s.setIsComplete(false);
 			s.setIsReadytoPay(false);
 			EntityManager.addObject("Sale", s);
 			this.setCurrentSale(s);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
-			s.getBelongedCashDesk() == currentCashDesk
+			s.getBelongedCashDesk() == getCurrentCashDesk()
 			 && 
-			StandardOPs.includes(currentCashDesk.getContainedSales(), s)
+			StandardOPs.includes(getCurrentCashDesk().getContainedSales(), s)
 			 && 
 			s.getIsComplete() == false
 			 && 
@@ -110,7 +133,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -166,7 +189,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			EntityManager.addObject("SalesLineItem", sli);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			this.getCurrentSaleLine() == sli
@@ -191,7 +214,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -232,7 +255,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			currentSale.setIsReadytoPay(true);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(currentSale.getAmount() == StandardOPs.sum(sub)
 			 && 
@@ -244,7 +267,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return currentSale.getAmount();
 		}
 		else
@@ -275,15 +298,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			cp.setAmountTendered(amount);
 			cp.setBelongedSale(currentSale);
 			currentSale.setAssoicatedPayment(cp);
-			currentSale.setBelongedstore(currentStore);
-			currentStore.addSales(currentSale);
+			currentSale.setBelongedstore(getCurrentStore());
+			getCurrentStore().addSales(currentSale);
 			currentSale.setIsComplete(true);
 			currentSale.setTime(LocalDate.now());
 			cp.setBalance(amount-currentSale.getAmount());
 			EntityManager.addObject("CashPayment", cp);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cp.getAmountTendered() == amount
@@ -292,9 +315,9 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			currentSale.getAssoicatedPayment() == cp
 			 && 
-			currentSale.getBelongedstore() == currentStore
+			currentSale.getBelongedstore() == getCurrentStore()
 			 && 
-			StandardOPs.includes(currentStore.getSales(), currentSale)
+			StandardOPs.includes(getCurrentStore().getSales(), currentSale)
 			 && 
 			currentSale.getIsComplete() == true
 			 && 
@@ -310,7 +333,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -344,13 +367,13 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			cdp.setCardAccountNumber(cardAccountNumber);
 			cdp.setExpiryDate(expiryDate);
 			EntityManager.addObject("CardPayment", cdp);
-			currentSale.setBelongedstore(currentStore);
-			currentStore.addSales(currentSale);
+			currentSale.setBelongedstore(getCurrentStore());
+			getCurrentStore().addSales(currentSale);
 			currentSale.setIsComplete(true);
 			currentSale.setTime(LocalDate.now());
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cdp.getAmountTendered() == fee
@@ -365,9 +388,9 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			StandardOPs.includes(((List<CardPayment>)EntityManager.getAllInstancesOf(CardPayment.class)), cdp)
 			 && 
-			currentSale.getBelongedstore() == currentStore
+			currentSale.getBelongedstore() == getCurrentStore()
 			 && 
-			StandardOPs.includes(currentStore.getSales(), currentSale)
+			StandardOPs.includes(getCurrentStore().getSales(), currentSale)
 			 && 
 			currentSale.getIsComplete() == true
 			 && 
@@ -379,7 +402,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

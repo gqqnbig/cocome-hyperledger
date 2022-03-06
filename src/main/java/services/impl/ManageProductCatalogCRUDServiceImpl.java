@@ -18,6 +18,7 @@ import org.hyperledger.fabric.shim.*;
 import org.hyperledger.fabric.contract.annotation.*;
 import org.hyperledger.fabric.contract.*;
 import com.owlike.genson.Genson;
+import java.util.*;
 
 @Contract
 public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalogCRUDService, Serializable, ContractInterface {
@@ -37,33 +38,55 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 	//Shared variable from system services
 	
 	/* Shared variable from system services and get()/set() methods */
-	private CashDesk currentCashDesk;
-	private Store currentStore;
+	private Object currentCashDeskPK;
+	private Object currentStorePK;
 			
 	/* all get and set functions for temp property*/
 	public CashDesk getCurrentCashDesk() {
-		return currentCashDesk;
+		return EntityManager.getCashDeskByPK(getCurrentCashDeskPK());
+	}
+
+	private Object getCurrentCashDeskPK() {
+		if (currentCashDeskPK == null)
+			currentCashDeskPK = genson.deserialize(EntityManager.stub.getStringState("system.currentCashDeskPK"), Integer.class);
+	
+		return currentCashDeskPK;
 	}	
 	
 	public void setCurrentCashDesk(CashDesk currentcashdesk) {
-		this.currentCashDesk = currentcashdesk;
+		setCurrentCashDeskPK(currentcashdesk.getPK());
+	}
+
+	private void setCurrentCashDeskPK(Object currentCashDeskPK) {
+		String json = genson.serialize(currentCashDeskPK);
+		EntityManager.stub.putStringState("system.currentCashDeskPK", json);
+		this.currentCashDeskPK = currentCashDeskPK;
 	}
 	public Store getCurrentStore() {
-		return currentStore;
+		return EntityManager.getStoreByPK(getCurrentStorePK());
+	}
+
+	private Object getCurrentStorePK() {
+		if (currentStorePK == null)
+			currentStorePK = genson.deserialize(EntityManager.stub.getStringState("system.currentStorePK"), Integer.class);
+	
+		return currentStorePK;
 	}	
 	
 	public void setCurrentStore(Store currentstore) {
-		this.currentStore = currentstore;
+		setCurrentStorePK(currentstore.getPK());
+	}
+
+	private void setCurrentStorePK(Object currentStorePK) {
+		String json = genson.serialize(currentStorePK);
+		EntityManager.stub.putStringState("system.currentStorePK", json);
+		this.currentStorePK = currentStorePK;
 	}
 				
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -100,7 +123,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			EntityManager.addObject("ProductCatalog", pro);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			pro.getId() == id
@@ -115,7 +138,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -158,13 +181,13 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return productcatalog;
+			; return productcatalog;
 		}
 		else
 		{
@@ -204,7 +227,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			productcatalog.setName(name);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(productcatalog.getId() == id
 			 && 
@@ -216,7 +239,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -260,7 +283,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			EntityManager.deleteObject("ProductCatalog", productcatalog);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<ProductCatalog>)EntityManager.getAllInstancesOf(ProductCatalog.class)), productcatalog)
 			 && 
@@ -270,7 +293,7 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
