@@ -104,6 +104,10 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 		
 		/* previous state in post-condition*/
 
+		logger.info(String.format("%s", StandardOPs.oclIsundefined(getCurrentCashDesk())));
+		logger.info(String.format("%s", getCurrentCashDesk().getIsOpened()));
+		logger.info(String.format("%s", currentSale));
+
 		/* check precondition */
 		if (StandardOPs.oclIsundefined(getCurrentCashDesk()) == false && getCurrentCashDesk().getIsOpened() == true && (StandardOPs.oclIsundefined(currentSale) == true || (StandardOPs.oclIsundefined(currentSale) == false && currentSale.getIsComplete() == true))) 
 		{ 
