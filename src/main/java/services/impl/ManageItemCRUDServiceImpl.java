@@ -251,6 +251,8 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			 && 
 			item.getOrderPrice() == orderprice
 			 && 
+			EntityManager.saveModified(Item.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

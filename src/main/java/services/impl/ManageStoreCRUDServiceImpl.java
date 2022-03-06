@@ -244,6 +244,8 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			 && 
 			store.getIsOpened() == isopened
 			 && 
+			EntityManager.saveModified(Store.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

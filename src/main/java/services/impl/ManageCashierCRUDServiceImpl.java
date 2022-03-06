@@ -233,6 +233,8 @@ public class ManageCashierCRUDServiceImpl implements ManageCashierCRUDService, S
 			 && 
 			cashier.getName() == name
 			 && 
+			EntityManager.saveModified(Cashier.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

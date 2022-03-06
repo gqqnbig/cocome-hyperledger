@@ -233,6 +233,8 @@ public class ManageProductCatalogCRUDServiceImpl implements ManageProductCatalog
 			 && 
 			productcatalog.getName() == name
 			 && 
+			EntityManager.saveModified(ProductCatalog.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

@@ -74,6 +74,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			 && 
 			cd.getIsOpened() == true
 			 && 
+			EntityManager.saveModified(CashDesk.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -130,6 +132,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			 && 
 			cd.getIsOpened() == false
 			 && 
+			EntityManager.saveModified(CashDesk.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -186,6 +190,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			 && 
 			sto.getIsOpened() == true
 			 && 
+			EntityManager.saveModified(Store.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -239,6 +245,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			// post-condition checking
 			if (!(sto.getIsOpened() == false
 			 && 
+			EntityManager.saveModified(Store.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -292,6 +300,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 			// post-condition checking
 			if (!(item.getPrice() == newPrice
 			 && 
+			EntityManager.saveModified(Item.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
@@ -369,6 +379,8 @@ public class CoCoMESystemImpl implements CoCoMESystem, Serializable, ContractInt
 				return true;
 			}).test(op.getContainedEntries())
 			 && 
+			EntityManager.saveModified(OrderProduct.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

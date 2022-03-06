@@ -208,6 +208,8 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			StandardOPs.includes(((List<SalesLineItem>)EntityManager.getAllInstancesOf(SalesLineItem.class)), sli)
 			 && 
+			EntityManager.saveModified(Item.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

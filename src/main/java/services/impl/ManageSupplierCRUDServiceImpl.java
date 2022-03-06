@@ -233,6 +233,8 @@ public class ManageSupplierCRUDServiceImpl implements ManageSupplierCRUDService,
 			 && 
 			supplier.getName() == name
 			 && 
+			EntityManager.saveModified(Supplier.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}

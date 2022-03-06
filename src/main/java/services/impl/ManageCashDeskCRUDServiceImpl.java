@@ -239,6 +239,8 @@ public class ManageCashDeskCRUDServiceImpl implements ManageCashDeskCRUDService,
 			 && 
 			cashdesk.getIsOpened() == isopened
 			 && 
+			EntityManager.saveModified(CashDesk.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
