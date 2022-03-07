@@ -58,11 +58,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -101,7 +97,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			EntityManager.addObject("Store", sto);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			sto.getId() == id
@@ -120,7 +116,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -163,13 +159,13 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return store;
+			; return store;
 		}
 		else
 		{
@@ -211,7 +207,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			store.setIsOpened(isopened);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(store.getId() == id
 			 && 
@@ -221,13 +217,15 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			 && 
 			store.getIsOpened() == isopened
 			 && 
+			EntityManager.saveModified(Store.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -271,7 +269,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			EntityManager.deleteObject("Store", store);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<Store>)EntityManager.getAllInstancesOf(Store.class)), store)
 			 && 
@@ -281,7 +279,7 @@ public class ManageStoreCRUDServiceImpl implements ManageStoreCRUDService, Seria
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

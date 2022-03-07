@@ -59,11 +59,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -103,7 +99,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			EntityManager.addObject("Item", ite);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			ite.getBarcode() == barcode
@@ -124,7 +120,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -167,13 +163,13 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return item;
+			; return item;
 		}
 		else
 		{
@@ -216,7 +212,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			item.setOrderPrice(orderprice);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(item.getBarcode() == barcode
 			 && 
@@ -228,13 +224,15 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			 && 
 			item.getOrderPrice() == orderprice
 			 && 
+			EntityManager.saveModified(Item.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -278,7 +276,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			EntityManager.deleteObject("Item", item);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<Item>)EntityManager.getAllInstancesOf(Item.class)), item)
 			 && 
@@ -288,7 +286,7 @@ public class ManageItemCRUDServiceImpl implements ManageItemCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

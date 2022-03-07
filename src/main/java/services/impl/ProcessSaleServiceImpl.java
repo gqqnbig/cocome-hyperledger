@@ -59,11 +59,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -89,7 +85,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			this.setCurrentSale(s);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			s.getBelongedCashDesk() == currentCashDesk
@@ -104,13 +100,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			this.getCurrentSale() == s
 			 && 
+			EntityManager.saveModified(CashDesk.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -166,7 +164,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			EntityManager.addObject("SalesLineItem", sli);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			this.getCurrentSaleLine() == sli
@@ -185,13 +183,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			StandardOPs.includes(((List<SalesLineItem>)EntityManager.getAllInstancesOf(SalesLineItem.class)), sli)
 			 && 
+			EntityManager.saveModified(Sale.class) && EntityManager.saveModified(Item.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -232,19 +232,21 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			currentSale.setIsReadytoPay(true);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(currentSale.getAmount() == StandardOPs.sum(sub)
 			 && 
 			currentSale.getIsReadytoPay() == true
 			 && 
+			EntityManager.saveModified(Sale.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return currentSale.getAmount();
 		}
 		else
@@ -283,7 +285,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			EntityManager.addObject("CashPayment", cp);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cp.getAmountTendered() == amount
@@ -304,13 +306,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			StandardOPs.includes(((List<CashPayment>)EntityManager.getAllInstancesOf(CashPayment.class)), cp)
 			 && 
+			EntityManager.saveModified(Sale.class) && EntityManager.saveModified(Store.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -350,7 +354,7 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			currentSale.setTime(LocalDate.now());
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			cdp.getAmountTendered() == fee
@@ -373,13 +377,15 @@ public class ProcessSaleServiceImpl implements ProcessSaleService, Serializable,
 			 && 
 			currentSale.getTime().isEqual(LocalDate.now())
 			 && 
+			EntityManager.saveModified(Sale.class) && EntityManager.saveModified(Store.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

@@ -59,11 +59,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		CoCoMESystem cocomesystem_service = (CoCoMESystem) ServiceManager.getAllInstancesOf(CoCoMESystem.class).get(0);
-		cocomesystem_service.setCurrentCashDesk(currentCashDesk);
-		cocomesystem_service.setCurrentStore(currentStore);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -88,7 +84,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			this.setCurrentOrderProduct(op);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			op.getOrderStatus() == OrderStatus.NEW
@@ -107,7 +103,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -144,13 +140,13 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return tempsitem.toArray(Item[]::new);
+			; return tempsitem.toArray(Item[]::new);
 		}
 		else
 		{
@@ -195,7 +191,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			currentOrderProduct.addContainedEntries(order);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			order.getQuantity() == quantity
@@ -208,13 +204,15 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			 && 
 			StandardOPs.includes(currentOrderProduct.getContainedEntries(), order)
 			 && 
+			EntityManager.saveModified(OrderProduct.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -257,17 +255,19 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			currentOrderProduct.setSupplier(sup);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(currentOrderProduct.getSupplier() == sup
 			 && 
+			EntityManager.saveModified(OrderProduct.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -305,7 +305,7 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(currentOrderProduct.getOrderStatus() == OrderStatus.REQUESTED
 			 && 
@@ -324,13 +324,15 @@ public class CoCoMEOrderProductsImpl implements CoCoMEOrderProducts, Serializabl
 				return true;
 			}).test(currentOrderProduct.getContainedEntries())
 			 && 
+			EntityManager.saveModified(OrderProduct.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
