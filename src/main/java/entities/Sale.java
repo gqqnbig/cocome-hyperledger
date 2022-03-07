@@ -8,49 +8,64 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
 
+@DataType()
 public class Sale implements Serializable {
+
+	// Without @JsonProperty, genson will not set this field during deserialization.
+	@JsonProperty
+	private final String guid = EntityManager.getGuid();
 	
 	/* all primary attributes */
-	private LocalDate Time;
-	private boolean IsComplete;
-	private float Amount;
-	private boolean IsReadytoPay;
+	@Property()
+	private LocalDate time;
+	@Property()
+	private boolean isComplete;
+	@Property()
+	private float amount;
+	@Property()
+	private boolean isReadytoPay;
 	
 	/* all references */
-	private Store Belongedstore; 
-	private CashDesk BelongedCashDesk; 
-	private List<SalesLineItem> ContainedSalesLine = new LinkedList<SalesLineItem>(); 
-	private Payment AssoicatedPayment; 
+	@JsonProperty
+	private int BelongedstorePK; 
+	@JsonProperty
+	private int BelongedCashDeskPK; 
+	@JsonProperty
+	private List<String> ContainedSalesLinePKs = new LinkedList<>(); 
+	@JsonProperty
+	private String AssoicatedPaymentPK; 
 	
 	/* all get and set functions */
 	public LocalDate getTime() {
-		return Time;
+		return time;
 	}	
 	
 	public void setTime(LocalDate time) {
-		this.Time = time;
+		this.time = time;
 	}
 	public boolean getIsComplete() {
-		return IsComplete;
+		return isComplete;
 	}	
 	
 	public void setIsComplete(boolean iscomplete) {
-		this.IsComplete = iscomplete;
+		this.isComplete = iscomplete;
 	}
 	public float getAmount() {
-		return Amount;
+		return amount;
 	}	
 	
 	public void setAmount(float amount) {
-		this.Amount = amount;
+		this.amount = amount;
 	}
 	public boolean getIsReadytoPay() {
-		return IsReadytoPay;
+		return isReadytoPay;
 	}	
 	
 	public void setIsReadytoPay(boolean isreadytopay) {
-		this.IsReadytoPay = isreadytopay;
+		this.isReadytoPay = isreadytopay;
 	}
 	
 	/* all functions for reference*/
@@ -91,7 +106,7 @@ public class Sale implements Serializable {
 	/* invarints checking*/
 	public boolean Sale_AmountGreatAndEqualZero() {
 		
-		if (Amount >= 0) {
+		if (amount >= 0) {
 			return true;
 		} else {
 			return false;

@@ -8,30 +8,36 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
 
+@DataType()
 public class Cashier implements Serializable {
 	
 	/* all primary attributes */
-	private int Id;
-	private String Name;
+	@Property()
+	private int id;
+	@Property()
+	private String name;
 	
 	/* all references */
-	private Store WorkedStore; 
+	@JsonProperty
+	private int WorkedStorePK; 
 	
 	/* all get and set functions */
 	public int getId() {
-		return Id;
+		return id;
 	}	
 	
 	public void setId(int id) {
-		this.Id = id;
+		this.id = id;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}	
 	
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	
 	/* all functions for reference*/

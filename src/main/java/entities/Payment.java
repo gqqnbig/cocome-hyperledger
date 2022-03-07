@@ -8,22 +8,31 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
 
+@DataType()
 public class Payment implements Serializable {
+
+	// Without @JsonProperty, genson will not set this field during deserialization.
+	@JsonProperty
+	private final String guid = EntityManager.getGuid();
 	
 	/* all primary attributes */
-	private float AmountTendered;
+	@Property()
+	private float amountTendered;
 	
 	/* all references */
-	private Sale BelongedSale; 
+	@JsonProperty
+	private String BelongedSalePK; 
 	
 	/* all get and set functions */
 	public float getAmountTendered() {
-		return AmountTendered;
+		return amountTendered;
 	}	
 	
 	public void setAmountTendered(float amounttendered) {
-		this.AmountTendered = amounttendered;
+		this.amountTendered = amounttendered;
 	}
 	
 	/* all functions for reference*/
