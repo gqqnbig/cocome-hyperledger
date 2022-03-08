@@ -2,7 +2,7 @@ package entities;
 
 import com.owlike.genson.annotation.JsonIgnore;
 import com.owlike.genson.annotation.JsonProperty;
-import services.impl.StandardOPs;
+import org.json.JSONPropertyIgnore;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import java.lang.reflect.Method;
 import java.util.stream.Collectors;
 
 import org.hyperledger.fabric.contract.annotation.*;
-import com.owlike.genson.annotation.*;
 
 @DataType()
 public class Sale implements Serializable {
@@ -77,6 +76,7 @@ public class Sale implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public Store getBelongedstore() {
 		return EntityManager.getStoreByPK(BelongedstorePK);
 	}	
@@ -86,6 +86,7 @@ public class Sale implements Serializable {
 	}
 
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public CashDesk getBelongedCashDesk() {
 		return EntityManager.getCashDeskByPK(BelongedCashDeskPK);
 	}	
@@ -95,6 +96,7 @@ public class Sale implements Serializable {
 	}
 
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public List<SalesLineItem> getContainedSalesLine() {
 		return ContainedSalesLinePKs.stream().map(EntityManager::getSalesLineItemByPK).collect(Collectors.toList());
 	}
